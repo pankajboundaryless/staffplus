@@ -1,0 +1,15 @@
+test_case: people_list_accessible
+module: people
+auth:
+  role: admin
+steps:
+  - action: GET
+    path: /people
+    expect_status: 200
+
+validations:
+  - source: http
+    path: /people
+    selector: "table tbody tr, .person-row"
+    expect:
+      count_gte: 1

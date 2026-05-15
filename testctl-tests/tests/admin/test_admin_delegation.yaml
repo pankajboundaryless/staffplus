@@ -1,0 +1,33 @@
+test_case: settings_create_deputy
+module: admin
+auth:
+  role: admin
+
+steps:
+  - action: GET
+    path: /settings
+    expect_status: 200
+    extract:
+      - name: first_deputy_id
+        selector: "select[name='deputy_person_id'] option:not([value=''])"
+        attribute: value
+
+  - action: POST
+    path: /settings/deputy/new
+    body:
+      deputy_person_id: "{{ first_deputy_id }}"
+      valid_from:       "2026-05-07"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: approval_delegations
+    lookup:
+      tenant_id: 1
+    order_by: id DESC
+
+teardown_sql:
+  - >
+    DELETE FROM approval_delegations
+    WHERE tenant_id = 1
+    AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)

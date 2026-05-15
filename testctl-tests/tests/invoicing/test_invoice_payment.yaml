@@ -1,0 +1,37 @@
+test_case: invoicing_record_payment
+module: invoicing
+auth:
+  role: admin
+
+setup_sql:
+  - >
+    INSERT IGNORE INTO invoices
+    (id, tenant_id, customer_id, invoice_number, invoice_date, due_date, currency,
+     status, total, amount_paid, created_at)
+    SELECT 99901, 1, c.id, 'TEST-99901', '2026-05-07', '2026-06-07', 'CHF',
+           'sent', 1000.00, 0.00, NOW()
+    FROM customers c WHERE c.tenant_id = 1 LIMIT 1
+
+steps:
+  - action: POST
+    path: /invoicing/99901/action
+    body:
+      action:   "record_payment"
+      amount:   "1000.00"
+      currency: "CHF"
+      paid_at:  "2026-05-07"
+      notes:    "Testctl test payment"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: invoices
+    lookup:
+      id: 99901
+    expect:
+      status:      paid
+      amount_paid: "1000.00"
+
+teardown_sql:
+  - "DELETE FROM payment_transactions WHERE invoice_id = 99901"
+  - "DELETE FROM invoices WHERE id = 99901"

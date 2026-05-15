@@ -1,0 +1,23 @@
+test_case: security_sql_injection_in_search
+module: security
+auth:
+  role: employee
+
+steps:
+  - action: GET
+    path: "/people?search=1%27+OR+%271%27%3D%271"
+    expect_status: 200
+    validations:
+      - type: text_contains
+        value: "People"
+
+  - action: GET
+    path: "/projects?q=test%27%3B+DROP+TABLE+projects%3B--"
+    expect_status: 200
+
+validations:
+  - source: database
+    table: projects
+    lookup:
+      tenant_id: 1
+    order_by: id ASC

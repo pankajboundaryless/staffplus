@@ -1,0 +1,37 @@
+test_case: people_create_basic
+module: people
+auth:
+  role: admin
+
+setup_sql:
+  - "DELETE FROM people WHERE email = 'tester.mctest@example.test' AND tenant_id = 1"
+
+steps:
+  - action: GET
+    path: /people/new
+    expect_status: 200
+
+  - action: POST
+    path: /people/new
+    body:
+      first_name:    Tester
+      last_name:     McTest
+      email:         tester.mctest@example.test
+      status:        active
+      contract_type: permanent
+      weekly_hours:  "40"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: people
+    lookup:
+      email:     tester.mctest@example.test
+      tenant_id: 1
+    expect:
+      first_name: Tester
+      last_name:  McTest
+      status:     active
+
+teardown_sql:
+  - "DELETE FROM people WHERE email = 'tester.mctest@example.test' AND tenant_id = 1"

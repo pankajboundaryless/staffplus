@@ -1,0 +1,159 @@
+# Anonymization rules applied to the source DB dump before each test run.
+#
+# seed: change this per environment so anonymized values are unpredictable
+#       outside the test environment. Use a long random string or an env var.
+#
+# Strategies:
+#   constant           — replace all rows with a fixed literal value
+#   suppress           — set field to NULL
+#   deterministic_name — sha256-based mapping to "Prefix_NNNN"; same original → same result
+#   deterministic_email— as above but produces local@domain
+#   sequential         — "Prefix 1", "Prefix 2", … ordered by id
+#   numeric_range      — random value in [min, max], deterministic per original
+#   preserve_format    — scramble digits, keep separators (e.g. INV-2026-001 → INV-8312-647)
+#   fake_iban          — replace with a syntactically valid but fake IBAN
+#   fake_phone         — replace with +41000000000
+
+seed: "${ANON_SEED}"
+
+rules:
+  - table: people
+    fields:
+      first_name:
+        strategy: deterministic_name
+        prefix: Person
+      last_name:
+        strategy: suppress
+      email:
+        strategy: deterministic_email
+        domain: example.test
+      phone:
+        strategy: fake_phone
+      address:
+        strategy: constant
+        value: "Test Street 1"
+
+  - table: users
+    fields:
+      username:
+        strategy: deterministic_email
+        domain: example.test
+      email:
+        strategy: deterministic_email
+        domain: example.test
+
+  - table: customers
+    fields:
+      name:
+        strategy: sequential
+        prefix: Customer
+      email:
+        strategy: deterministic_email
+        domain: example.test
+      phone:
+        strategy: fake_phone
+      vat_number:
+        strategy: preserve_format
+      registration_no:
+        strategy: preserve_format
+
+  - table: employment_contracts
+    fields:
+      salary:
+        strategy: numeric_range
+        min: 50000
+        max: 150000
+
+  - table: contract_salary_history
+    fields:
+      salary:
+        strategy: numeric_range
+        min: 50000
+        max: 150000
+
+  - table: invoices
+    fields:
+      reference:
+        strategy: preserve_format
+
+  - table: legal_entities
+    fields:
+      name:
+        strategy: sequential
+        prefix: Legal Entity
+      legal_name:
+        strategy: sequential
+        prefix: Legal Entity SA
+      registration_no:
+        strategy: preserve_format
+      vat_number:
+        strategy: preserve_format
+
+  - table: legal_entity_bank_accounts
+    fields:
+      iban:
+        strategy: fake_iban
+      bic:
+        strategy: constant
+        value: TESTBICXXX
+      account_holder:
+        strategy: constant
+        value: Test Account Holder
+
+  - table: person_emergency_contacts
+    fields:
+      name:
+        strategy: constant
+        value: Emergency Contact
+      phone:
+        strategy: fake_phone
+      email:
+        strategy: constant
+        value: emergency@example.test
+
+  # Rate cards — scramble all monetary rates so real pricing is never
+  # visible in test environments. Ranges are intentionally wide (1–8x
+  # typical real values) so relative ordering of levels is not preserved.
+  - table: rate_card_levels
+    fields:
+      onshore_hourly_rate:
+        strategy: numeric_range
+        min: 50
+        max: 400
+        decimal_places: 2
+      onshore_daily_rate:
+        strategy: numeric_range
+        min: 400
+        max: 3200
+        decimal_places: 2
+      offshore_hourly_rate:
+        strategy: numeric_range
+        min: 20
+        max: 250
+        decimal_places: 2
+      offshore_daily_rate:
+        strategy: numeric_range
+        min: 160
+        max: 2000
+        decimal_places: 2
+
+  - table: cross_charge_discounts
+    fields:
+      discount_pct:
+        strategy: numeric_range
+        min: 0
+        max: 40
+        decimal_places: 2
+      discount_per_hour:
+        strategy: numeric_range
+        min: 0
+        max: 50
+        decimal_places: 2
+
+  - table: customer_billing_profiles
+    fields:
+      discount_pct:
+        strategy: numeric_range
+        min: 0
+        max: 30
+        decimal_places: 2

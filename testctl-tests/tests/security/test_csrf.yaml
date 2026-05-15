@@ -1,0 +1,18 @@
+test_case: security_csrf_protection_enforced
+module: security
+auth:
+  role: employee
+# POST with an invalid CSRF token must be rejected with HTTP 419.
+# skip_csrf: true tells the performer NOT to auto-inject the valid token.
+steps:
+  - action: POST
+    path: /time/store
+    skip_csrf: true
+    body:
+      project_id:  "1"
+      date:        "2026-05-07"
+      hours:       "8"
+      description: "should be blocked"
+      _csrf:       "invalid-csrf-token-0000000000000000"
+    follow_redirect: false
+    expect_status: 419

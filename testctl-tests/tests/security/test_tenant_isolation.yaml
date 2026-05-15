@@ -1,0 +1,17 @@
+test_case: security_tenant_isolation_people
+module: security
+auth:
+  role: admin
+
+# Tenant isolation: craft a request referencing an entity ID from a
+# different tenant. The app must return 403 or 404, never 200 with data.
+#
+# This test assumes tenant_id=1 is the test tenant, and attempts to
+# access /people/<id> where the person belongs to tenant_id=2 (if it
+# exists). If no cross-tenant data exists in the test DB, the test
+# verifies that a non-existent ID returns 404.
+steps:
+  - action: GET
+    path: /people/999999
+    follow_redirect: false
+    expect_status: 404

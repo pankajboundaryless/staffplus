@@ -1,0 +1,31 @@
+test_case: products_create_product
+module: products
+auth:
+  role: admin
+
+steps:
+  - action: GET
+    path: /products/new
+    expect_status: 200
+
+  - action: POST
+    path: /products/new
+    body:
+      name:               "Testctl Test Product"
+      unit:               "hour"
+      default_sale_price: "150.00"
+      status:             "active"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: products
+    lookup:
+      tenant_id: 1
+      name:      "Testctl Test Product"
+    expect:
+      status:             active
+      default_sale_price: "150.00"
+
+teardown_sql:
+  - "DELETE FROM products WHERE tenant_id = 1 AND name = 'Testctl Test Product'"

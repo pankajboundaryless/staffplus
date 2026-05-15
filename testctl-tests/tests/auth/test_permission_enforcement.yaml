@@ -1,0 +1,15 @@
+test_case: auth_employee_cannot_access_admin
+module: auth
+auth:
+  role: employee
+# Employees must not reach admin-only routes.
+steps:
+  - action: GET
+    path: /admin/roles
+    follow_redirect: false
+    expect_status: 403
+
+  - action: GET
+    path: /admin/settings
+    follow_redirect: false
+    expect_status: 403

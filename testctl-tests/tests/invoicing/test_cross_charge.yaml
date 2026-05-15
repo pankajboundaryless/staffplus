@@ -1,0 +1,15 @@
+test_case: invoicing_cross_charge_form_accessible
+module: invoicing
+auth:
+  role: admin
+
+# Note: Cross-charge requires at least 2 legal entities. This test only
+# verifies the form loads. Full cross-charge generation tested manually.
+
+steps:
+  - action: GET
+    path: /invoicing/cross-charge/new
+    expect_status: 200
+    validations:
+      - type: text_contains
+        value: "Cross-Charge"

@@ -1,0 +1,60 @@
+# testctl.yaml — main configuration for Boundaryless test suite
+# All ${VAR} references are resolved from environment variables.
+# Copy .env.example to .env and fill in values before running.
+
+app:
+  base_url: "${TEST_BASE_URL}"          # e.g. http://localhost or http://test.boundaryless.local
+
+database:
+  host:     "${DB_HOST}"
+  port:     3306
+  user:     "${DB_USER}"
+  password: "${DB_PASSWORD}"
+  name:     "${DB_NAME}"               # source database (anonymized copy is created per run)
+
+# Auth: the engine generates valid HS256 JWTs and posts to /auth/callback.
+# The app validates the JWT, runs syncUser(), and creates a PHP session.
+# These test users are created on-the-fly in the test DB by syncUser() —
+# no manual DB seeding required. auth_uid values use high integers (90001+)
+# to avoid collisions with real anonymized production data.
+auth:
+  strategy:     callback
+  jwt_secret:   "${JWT_SECRET}"
+  jwt_aud:      "${AUTH_APP_SLUG}"     # must match jwt_aud in config/auth.php
+  callback_url: /auth/callback
+  test_users:
+    admin:
+      auth_uid: 90001
+      email:    testadmin@example.test
+      name:     Test Admin
+      role:     admin
+      roles:    [admin]
+    project_manager:
+      auth_uid: 90002
+      email:    testpm@example.test
+      name:     Test PM
+      role:     project_manager
+      roles:    [project_manager]
+    employee:
+      auth_uid: 90003
+      email:    testemployee@example.test
+      name:     Test Employee
+      role:     employee
+      roles:    [employee]
+    line_manager:
+      auth_uid: 90004
+      email:    testmanager@example.test
+      name:     Test Manager
+      role:     line_manager
+      roles:    [line_manager]
+
+# Release gate: test failures in critical_modules block deployment.
+# Failures outside critical modules are recorded but do not block.
+release_gate:
+  critical_modules:
+    - auth
+    - people
+    - time
+    - invoicing
+    - approvals
+  max_failures: 0                      # set > 0 to allow some non-critical failures

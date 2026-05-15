@@ -1,0 +1,12 @@
+test_case: reports_export_csv
+module: reports
+auth:
+  role: admin
+
+steps:
+  - action: GET
+    path: /reports/export/utilization
+    expect_status: 200
+    validations:
+      - type: text_contains
+        value: "Person"

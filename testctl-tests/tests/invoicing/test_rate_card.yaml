@@ -1,0 +1,15 @@
+test_case: invoicing_rate_card_list_accessible
+module: invoicing
+auth:
+  role: admin
+steps:
+  - action: GET
+    path: /invoicing/rate-cards
+    expect_status: 200
+
+validations:
+  - source: database
+    table: rate_cards
+    lookup:
+      tenant_id: 1
+    order_by: id ASC

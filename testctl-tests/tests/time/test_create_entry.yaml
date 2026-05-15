@@ -1,0 +1,43 @@
+test_case: time_create_entry_draft
+module: time
+auth:
+  role: employee
+
+setup_sql:
+  - "INSERT IGNORE INTO projects (id, tenant_id, name, status, type, created_at) VALUES (99001, 1, 'Testctl Time Project', 'active', 'billable', NOW())"
+  - >
+    INSERT IGNORE INTO project_members (project_id, person_id, role, created_at)
+    SELECT 99001, p.id, 'member', NOW()
+    FROM people p JOIN users u ON u.id = p.user_id
+    WHERE u.auth_uid = 90003 AND u.tenant_id = 1
+    LIMIT 1
+
+steps:
+  - action: GET
+    path: /time/book
+    expect_status: 200
+
+  - action: POST
+    path: /time/store
+    body:
+      project_id:  "99001"
+      date_worked: "2026-05-07"
+      duration:    "8"
+      description: "Testctl automated entry"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: time_entries
+    lookup:
+      project_id:  99001
+      date_worked: "2026-05-07"
+      tenant_id:   1
+    order_by: id DESC
+    expect:
+      status: draft
+
+teardown_sql:
+  - "DELETE FROM time_entries WHERE project_id = 99001 AND date_worked = '2026-05-07'"
+  - "DELETE FROM project_members WHERE project_id = 99001"
+  - "DELETE FROM projects WHERE id = 99001"

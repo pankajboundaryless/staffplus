@@ -1,0 +1,157 @@
+# Module definitions for the Boundaryless Management Platform.
+#
+# paths:      glob patterns matched against `git diff --name-only HEAD~1`
+#             Used by --changed and --impacted run modes.
+# downstream: modules that must also be re-tested when this module changes.
+
+modules:
+  auth:
+    paths:
+      - app/Controllers/AuthController.php
+      - app/Core/Auth.php
+      - app/Core/JWT.php
+    downstream:
+      - people
+      - projects
+      - time
+      - absence
+      - invoicing
+      - approvals
+      - admin
+      - reports
+
+  people:
+    paths:
+      - app/Controllers/PeopleController.php
+      - app/Controllers/TeamController.php
+      - app/Models/PersonModel.php
+    downstream:
+      - projects
+      - time
+      - invoicing
+      - planning
+      - reports
+
+  projects:
+    paths:
+      - app/Controllers/ProjectController.php
+      - app/Models/ProjectModel.php
+    downstream:
+      - time
+      - planning
+      - invoicing
+      - reports
+
+  time:
+    paths:
+      - app/Controllers/TimeController.php
+      - app/Models/TimeEntryModel.php
+      - app/Models/TimerSessionModel.php
+      - app/Services/BillingClassificationService.php
+    downstream:
+      - invoicing
+      - reports
+
+  absence:
+    paths:
+      - app/Controllers/AbsenceController.php
+      - app/Models/AbsenceRequestModel.php
+      - app/Services/AbsenceConflictService.php
+      - app/Services/AbsenceTimeBookingService.php
+    downstream:
+      - time
+      - reports
+
+  invoicing:
+    paths:
+      - app/Controllers/InvoiceController.php
+      - app/Models/InvoiceModel.php
+      - app/Models/RateCardModel.php
+      - app/Services/InvoiceService.php
+    downstream:
+      - reports
+
+  customers:
+    paths:
+      - app/Controllers/CustomerController.php
+      - app/Models/CustomerModel.php
+    downstream:
+      - invoicing
+      - projects
+      - reports
+
+  products:
+    paths:
+      - app/Controllers/ProductController.php
+      - app/Models/ProductModel.php
+      - app/Controllers/SubscriptionController.php
+      - app/Models/SubscriptionModel.php
+    downstream:
+      - invoicing
+
+  approvals:
+    paths:
+      - app/Controllers/ApprovalsController.php
+      - app/Controllers/ApprovalController.php
+      - app/Services/ApprovalService.php
+    downstream:
+      - time
+      - absence
+      - projects
+
+  planning:
+    paths:
+      - app/Controllers/PlanningController.php
+      - app/Models/ResourcePlanModel.php
+      - app/Controllers/SimulationController.php
+    downstream:
+      - reports
+
+  reports:
+    paths:
+      - app/Controllers/ReportController.php
+      - app/Helpers/ReportContext.php
+    downstream: []
+
+  admin:
+    paths:
+      - app/Controllers/AdminController.php
+    downstream:
+      - people
+      - projects
+      - time
+      - invoicing
+
+  holidays:
+    paths:
+      - app/Controllers/HolidayController.php
+    downstream:
+      - absence
+      - planning
+
+  tasks:
+    paths:
+      - app/Controllers/TaskController.php
+      - app/Models/BoardModel.php
+    downstream: []
+
+  legal_entities:
+    paths:
+      - app/Controllers/LegalEntityController.php
+    downstream:
+      - people
+      - projects
+      - invoicing
+
+  subscriptions:
+    paths:
+      - app/Controllers/SubscriptionController.php
+      - app/Models/SubscriptionModel.php
+    downstream:
+      - invoicing
+
+  settings:
+    paths:
+      - app/Controllers/SettingsController.php
+    downstream:
+      - approvals

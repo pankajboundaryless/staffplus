@@ -1,0 +1,12 @@
+test_case: admin_audit_log_accessible
+module: admin
+auth:
+  role: admin
+
+steps:
+  - action: GET
+    path: /admin/audit-log
+    expect_status: 200
+    validations:
+      - type: text_contains
+        value: "Audit Log"

@@ -1,0 +1,29 @@
+test_case: admin_settings_save
+module: admin
+auth:
+  role: admin
+
+steps:
+  - action: GET
+    path: /admin/settings
+    expect_status: 200
+
+  - action: POST
+    path: /admin/settings
+    body:
+      timezone:          "Europe/Zurich"
+      default_currency:  "CHF"
+      invoice_prefix:    "INV-"
+      week_starts_on:    "1"
+      standard_day_hours: "8"
+      working_days:      "5"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: tenant_settings
+    lookup:
+      tenant_id:   1
+      setting_key: "default_currency"
+    expect:
+      value: CHF

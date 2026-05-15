@@ -1,0 +1,37 @@
+test_case: absence_create_request
+module: absence
+auth:
+  role: employee
+
+steps:
+  - action: GET
+    path: /absence/request
+    expect_status: 200
+
+  - action: POST
+    path: /absence/request
+    body:
+      absence_type_id: "1"
+      start_date:      "2026-06-01"
+      end_date:        "2026-06-03"
+      notes:           "Testctl automated absence"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: absence_requests
+    lookup:
+      tenant_id:  1
+      start_date: "2026-06-01"
+    order_by: id DESC
+    expect:
+      end_date: "2026-06-03"
+      status:   pending
+
+teardown_sql:
+  - >
+    DELETE FROM absence_days WHERE absence_request_id IN
+    (SELECT id FROM absence_requests WHERE tenant_id = 1 AND start_date = '2026-06-01')
+  - "DELETE FROM approval_steps WHERE approval_request_id IN (SELECT id FROM approval_requests WHERE entity_type = 'absence' AND tenant_id = 1 AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR))"
+  - "DELETE FROM approval_requests WHERE entity_type = 'absence' AND tenant_id = 1 AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)"
+  - "DELETE FROM absence_requests WHERE tenant_id = 1 AND start_date = '2026-06-01'"

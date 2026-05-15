@@ -1,0 +1,34 @@
+test_case: legal_entities_create_entity
+module: legal_entities
+auth:
+  role: admin
+
+steps:
+  - action: GET
+    path: /legal-entities/new
+    expect_status: 200
+
+  - action: POST
+    path: /legal-entities/new
+    body:
+      name:                 "Testctl Legal Entity"
+      legal_name:           "Testctl Legal Entity GmbH"
+      type:                 "internal"
+      currency:             "CHF"
+      payment_terms_days:   "30"
+      invoice_language:     "en"
+      status:               "active"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: legal_entities
+    lookup:
+      tenant_id: 1
+      name:      "Testctl Legal Entity"
+    expect:
+      type:   internal
+      status: active
+
+teardown_sql:
+  - "DELETE FROM legal_entities WHERE tenant_id = 1 AND name = 'Testctl Legal Entity'"

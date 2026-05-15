@@ -1,0 +1,43 @@
+test_case: customers_add_contact
+module: customers
+auth:
+  role: admin
+
+setup_sql:
+  - >
+    INSERT IGNORE INTO customers
+    (id, tenant_id, name, type, status, created_at)
+    VALUES (99801, 1, 'Testctl Contact Customer', 'customer', 'active', NOW())
+  - >
+    INSERT IGNORE INTO customer_billing_profiles
+    (tenant_id, customer_id, currency, default_currency, payment_terms_days, updated_at)
+    VALUES (1, 99801, 'CHF', 'CHF', 30, NOW())
+
+steps:
+  - action: GET
+    path: /customers/99801
+    expect_status: 200
+
+  - action: POST
+    path: /customers/99801/contact
+    body:
+      first_name: "Test"
+      last_name:  "Contact"
+      email:      "testcontact@testctl.local"
+      job_title:  "QA Engineer"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: customer_contacts
+    lookup:
+      customer_id: 99801
+      email:       "testcontact@testctl.local"
+    expect:
+      first_name: "Test"
+      last_name:  "Contact"
+
+teardown_sql:
+  - "DELETE FROM customer_contacts WHERE customer_id = 99801"
+  - "DELETE FROM customer_billing_profiles WHERE customer_id = 99801"
+  - "DELETE FROM customers WHERE id = 99801"

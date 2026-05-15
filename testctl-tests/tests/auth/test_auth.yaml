@@ -1,0 +1,18 @@
+test_case: auth_unauthenticated_redirect
+module: auth
+# No auth block — verifies unauthenticated requests are redirected to login.
+steps:
+  - action: GET
+    path: /dashboard
+    follow_redirect: false
+    expect_status: 302
+
+  - action: GET
+    path: /time
+    follow_redirect: false
+    expect_status: 302
+
+  - action: GET
+    path: /invoicing
+    follow_redirect: false
+    expect_status: 302

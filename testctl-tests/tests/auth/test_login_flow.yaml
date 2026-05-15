@@ -1,0 +1,18 @@
+test_case: auth_login_as_admin
+module: auth
+auth:
+  role: admin
+# After login via JWT callback, the dashboard must be accessible (200).
+steps:
+  - action: GET
+    path: /dashboard
+    expect_status: 200
+
+validations:
+  - source: database
+    table: users
+    lookup:
+      auth_uid: 90001
+    expect:
+      auth_role: admin
+      email: testadmin@example.test

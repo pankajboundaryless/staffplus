@@ -1,0 +1,12 @@
+test_case: settings_page_accessible
+module: settings
+auth:
+  role: employee
+
+steps:
+  - action: GET
+    path: /settings
+    expect_status: 200
+    validations:
+      - type: text_contains
+        value: "Settings"

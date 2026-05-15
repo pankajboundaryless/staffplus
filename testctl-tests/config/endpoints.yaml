@@ -1,0 +1,44 @@
+# Result endpoint configuration.
+# Add as many endpoints as needed. Each run routes to all enabled endpoints.
+#
+# Built-in types: filesystem, html_report, webhook, jira
+# Custom types:   implement _<type>() in result_router.py and add a config entry here.
+
+endpoints:
+  # Always-on: write JSON + JUnit XML to the runs/ directory
+  - name: local-audit
+    type: filesystem
+    enabled: true
+    path: "${TESTCTL_RUNS_DIR:-.}/runs"
+
+  # HTML report for C-Level / management review
+  - name: html-report
+    type: html_report
+    enabled: true
+    path: "${TESTCTL_RUNS_DIR:-.}/runs/{run_id}/report.html"
+
+  # Jira: create a Bug issue for each failed test case
+  - name: jira
+    type: jira
+    enabled: false
+    url:          "${JIRA_URL}"
+    project_key:  "${JIRA_PROJECT_KEY}"
+    issue_type:   Bug
+    create_on:    NOK
+    token:        "${JIRA_TOKEN}"
+
+  # Generic release webhook (e.g. CI/CD pipeline gate, deployment system)
+  - name: release-webhook
+    type: webhook
+    enabled: false
+    url: "${RELEASE_WEBHOOK_URL}"
+    on: [APPROVED, REJECTED]
+    headers:
+      Authorization: "Bearer ${WEBHOOK_SECRET}"
+
+  # Slack notification on failure
+  - name: slack-on-fail
+    type: webhook
+    enabled: false
+    url: "${SLACK_WEBHOOK_URL}"
+    on: [REJECTED]

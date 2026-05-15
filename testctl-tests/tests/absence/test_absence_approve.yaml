@@ -1,0 +1,33 @@
+test_case: absence_approve_request
+module: absence
+auth:
+  role: admin
+
+setup_sql:
+  - >
+    INSERT IGNORE INTO absence_requests
+    (id, tenant_id, person_id, absence_type_id, start_date, end_date, status, created_at)
+    SELECT 99801, 1, p.id, 1, '2026-07-01', '2026-07-01', 'pending', NOW()
+    FROM people p JOIN users u ON u.id = p.user_id
+    WHERE u.auth_uid = 90003 AND u.tenant_id = 1
+    LIMIT 1
+
+steps:
+  - action: POST
+    path: /absence/approve
+    body:
+      request_id: "99801"
+    expect_status: 302
+
+validations:
+  - source: database
+    table: absence_requests
+    lookup:
+      id: 99801
+    expect:
+      status: approved
+
+teardown_sql:
+  - "DELETE FROM absence_days WHERE absence_request_id = 99801"
+  - "DELETE FROM time_entries WHERE absence_request_id = 99801"
+  - "DELETE FROM absence_requests WHERE id = 99801"
