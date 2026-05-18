@@ -1,0 +1,91 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# Session Freshness Reminder
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# Microsoft SSO sessions saved in PLAYWRIGHT_SESSION expire after ~7 days.
+# This workflow runs every Monday at 08:00 UTC and creates a GitHub Issue
+# as a reminder to refresh the session before the weekly CI runs fail.
+#
+# To refresh:
+#   1. Run:  python testctl-tests/playwright/save_session.py
+#   2. Log in with your Microsoft account in the browser
+#   3. Base64-encode the result:  base64 -i testctl-tests/playwright/.auth/session.json | pbcopy
+#   4. Update secret: GitHub → Settings → Secrets → PLAYWRIGHT_SESSION → Update
+#   5. Close the reminder issue
+# ══════════════════════════════════════════════════════════════════════════════
+
+name: Session Freshness Reminder
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"       # Every Monday 08:00 UTC
+  workflow_dispatch:
+
+jobs:
+  remind:
+    name: Check session age & remind
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if session secret exists
+        id: check
+        env:
+          PLAYWRIGHT_SESSION: ${{ secrets.PLAYWRIGHT_SESSION }}
+        run: |
+          if [ -z "$PLAYWRIGHT_SESSION" ]; then
+            echo "missing=true" >> $GITHUB_OUTPUT
+          else
+            echo "missing=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create reminder issue if session is missing
+        if: steps.check.outputs.missing == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔑 Playwright session missing — CI tests will fail',
+              labels: ['ci', 'testing'],
+              body: [
+                '## Playwright Auth Session Not Found',
+                '',
+                'The `PLAYWRIGHT_SESSION` GitHub Secret is missing or empty.',
+                'All CI test runs will fail until it is set.',
+                '',
+                '### How to fix',
+                '',
+                '```bash',
+                '# 1. Run the session saver locally',
+                'cd testctl-tests/playwright',
+                'python save_session.py',
+                '',
+                '# 2. Log in with Microsoft in the browser window that opens',
+                '',
+                '# 3. Base64-encode the session file',
+                'base64 -i .auth/session.json | pbcopy   # macOS — copies to clipboard',
+                '# Linux: base64 -w 0 .auth/session.json',
+                '```',
+                '',
+                '4. Go to **Settings → Secrets and variables → Actions**',
+                '5. Create or update secret named `PLAYWRIGHT_SESSION` — paste the base64 string',
+                '6. Close this issue',
+                '',
+                '_This reminder runs every Monday at 08:00 UTC._',
+              ].join('\n'),
+            });
+
+      - name: Weekly reminder (session exists, may be aging)
+        if: steps.check.outputs.missing == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Just post to job summary — don't spam issues every week if session exists
+            core.summary
+              .addHeading('🔑 Session Reminder')
+              .addRaw('PLAYWRIGHT_SESSION secret is present.\n\n')
+              .addRaw('Microsoft SSO sessions expire after **~7 days**.\n')
+              .addRaw('If E2E tests start failing with "Session expired" errors, ')
+              .addRaw('run `python testctl-tests/playwright/save_session.py` locally and update the secret.')
+              .write();

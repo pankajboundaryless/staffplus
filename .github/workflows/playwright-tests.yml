@@ -1,0 +1,235 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# StaffPlus — Playwright End-to-End Test Suite
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# TRIGGERS
+# ─────────
+#   • Every push to main        → full suite (release gate)
+#   • Every Pull Request        → full suite (PR check, blocks merge if fails)
+#   • Daily at 06:00 UTC        → scheduled regression run
+#   • Manual via GitHub UI      → "Run workflow" button (on-demand)
+#
+# AUTH STRATEGY
+# ─────────────
+#   Microsoft SSO sessions can't be created headlessly. Instead:
+#   1. Run  python save_session.py  locally (one-time login in browser)
+#   2. Base64-encode the session:  base64 -i .auth/session.json | pbcopy
+#   3. Paste into GitHub → Settings → Secrets → PLAYWRIGHT_SESSION
+#   4. Session lasts ~7 days — a separate "refresh-reminder" workflow alerts
+#      you when it's getting old so you know to re-run save_session.py.
+#
+# SECRETS REQUIRED (Settings → Secrets and variables → Actions)
+# ──────────────────────────────────────────────────────────────
+#   PLAYWRIGHT_SESSION   Base64-encoded contents of .auth/session.json
+#
+# ══════════════════════════════════════════════════════════════════════════════
+
+name: Playwright E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * *"       # 06:00 UTC daily
+  workflow_dispatch:           # manual trigger from GitHub UI
+    inputs:
+      test_filter:
+        description: "Optional: run only specific tests (e.g. test_11 or TestLeaveBalance)"
+        required: false
+        default: ""
+
+# Cancel any in-progress run for the same branch (saves runner minutes)
+concurrency:
+  group: playwright-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 1 — Run the full Playwright test suite
+  # ────────────────────────────────────────────────────────────────────────────
+  test:
+    name: "E2E Tests (${{ matrix.group }})"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # Split tests into parallel groups to keep CI fast
+    strategy:
+      fail-fast: false          # let all groups finish even if one fails
+      matrix:
+        include:
+          - group: "core"
+            files: "test_01_login.py test_02_dashboard.py test_03_people.py test_04_projects.py"
+          - group: "time-invoicing"
+            files: "test_05_time.py test_06_invoicing.py test_09_reports_admin.py"
+          - group: "security-ux"
+            files: "test_07_security.py test_08_ui_ux.py test_10_business_logic.py"
+          - group: "business-logic"
+            files: "test_11_leave_balance.py test_12_project_booking_edge_cases.py"
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── 2. Python setup ──────────────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: testctl-tests/playwright/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r testctl-tests/playwright/requirements.txt
+
+      # ── 3. Playwright browsers ───────────────────────────────────────────────
+      - name: Install Playwright browsers (Chromium only)
+        run: playwright install chromium --with-deps
+
+      # ── 4. Restore auth session from GitHub Secret ───────────────────────────
+      - name: Restore auth session
+        env:
+          PLAYWRIGHT_SESSION: ${{ secrets.PLAYWRIGHT_SESSION }}
+        run: |
+          mkdir -p testctl-tests/playwright/.auth
+          echo "$PLAYWRIGHT_SESSION" | base64 --decode > testctl-tests/playwright/.auth/session.json
+          echo "✓ Session file written ($(wc -c < testctl-tests/playwright/.auth/session.json) bytes)"
+
+      # ── 5. Run tests ─────────────────────────────────────────────────────────
+      - name: Run Playwright tests — ${{ matrix.group }}
+        working-directory: testctl-tests/playwright
+        env:
+          TEST_BASE_URL: ${{ vars.TEST_BASE_URL || 'https://robomon.boundaryless.com/test/timetracker/public' }}
+          HEADED: "0"
+        run: |
+          FILTER="${{ github.event.inputs.test_filter }}"
+          FILES="${{ matrix.files }}"
+
+          if [ -n "$FILTER" ]; then
+            # Manual trigger with a specific filter overrides the matrix split
+            pytest $FILTER \
+              --html=reports/report-${{ matrix.group }}.html \
+              --self-contained-html \
+              -v --tb=short --no-header -p no:warnings
+          else
+            pytest $FILES \
+              --html=reports/report-${{ matrix.group }}.html \
+              --self-contained-html \
+              -v --tb=short --no-header -p no:warnings
+          fi
+
+      # ── 6. Upload HTML report as artifact ────────────────────────────────────
+      - name: Upload test report
+        if: always()            # upload even when tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.group }}
+          path: testctl-tests/playwright/reports/report-${{ matrix.group }}.html
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 2 — Merge all reports and post a summary to the PR
+  # ────────────────────────────────────────────────────────────────────────────
+  report:
+    name: "Publish Test Summary"
+    runs-on: ubuntu-latest
+    needs: test
+    if: always()               # run even if tests failed
+
+    steps:
+      - name: Download all reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: playwright-report-*
+          merge-multiple: true
+          path: all-reports/
+
+      - name: Post summary to GitHub Job Summary
+        run: |
+          echo "## 🎭 Playwright E2E Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Group | Report |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          for f in all-reports/*.html; do
+            name=$(basename "$f" .html | sed 's/report-//')
+            echo "| $name | \`$f\` |" >> $GITHUB_STEP_SUMMARY
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📎 Download full HTML reports from the **Artifacts** section above." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Run:** \`${{ github.run_id }}\` | **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+
+      # Comment on PR with result summary (only for PRs)
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ needs.test.result }}';
+            const icon   = status === 'success' ? '✅' : '❌';
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+            const body = [
+              `## ${icon} Playwright E2E Tests — ${status.toUpperCase()}`,
+              '',
+              '| Group | Status |',
+              '|-------|--------|',
+              '| core (login, dashboard, people, projects) | ${{ needs.test.outputs.core || status }} |',
+              '| time-invoicing | ${{ needs.test.outputs.time-invoicing || status }} |',
+              '| security-ux | ${{ needs.test.outputs.security-ux || status }} |',
+              '| business-logic (leave balance, booking) | ${{ needs.test.outputs.business-logic || status }} |',
+              '',
+              `📎 [View full report & artifacts](${runUrl})`,
+              '',
+              '_Tests cover 12 modules: login → dashboard → people → projects → time → invoicing → security → UX → reports → business logic → leave balance → project booking edge cases_',
+            ].join('\n');
+
+            // Find and update existing bot comment, or create new one
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Playwright E2E Tests')
+            );
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 3 — Release gate  (only on push to main)
+  # ────────────────────────────────────────────────────────────────────────────
+  release-gate:
+    name: "Release Gate"
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Evaluate release readiness
+        run: |
+          STATUS="${{ needs.test.result }}"
+          echo "## Release Gate" >> $GITHUB_STEP_SUMMARY
+          if [ "$STATUS" = "success" ]; then
+            echo "✅ All E2E tests passed — this commit is **release-ready**." >> $GITHUB_STEP_SUMMARY
+            echo "STATUS=PASSED" >> $GITHUB_ENV
+          else
+            echo "❌ E2E tests FAILED — **do not release** this commit." >> $GITHUB_STEP_SUMMARY
+            echo "STATUS=FAILED" >> $GITHUB_ENV
+            exit 1
+          fi
