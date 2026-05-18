@@ -1,0 +1,17 @@
+# Auth sessions — contain live SSO tokens, never commit
+.auth/
+*.auth.json
+session.json
+
+# Generated test reports
+reports/
+*.html
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# OS
+.DS_Store

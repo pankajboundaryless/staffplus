@@ -1,0 +1,6 @@
+playwright>=1.40
+pytest>=7.0
+pytest-html>=4.0
+pytest-playwright>=0.4
+python-dotenv>=1.0
+requests>=2.31
