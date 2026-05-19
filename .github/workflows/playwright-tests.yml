@@ -88,14 +88,37 @@ jobs:
       - name: Install Playwright browsers (Chromium only)
         run: playwright install chromium --with-deps
 
-      # ── 4. Restore auth session from GitHub Secret ───────────────────────────
-      - name: Restore auth session
+      # ── 4. Create fresh auth session via JWT (no browser login needed) ─────────
+      #
+      # Strategy A — JWT_SECRET available (preferred for CI):
+      #   Generates a signed JWT and exchanges it at /auth/callback.
+      #   Session is always fresh — no expiry problem.
+      #
+      # Strategy B — JWT_SECRET not available (fallback):
+      #   Decodes the PLAYWRIGHT_SESSION secret (base64 of session.json saved
+      #   manually via save_session.py). Expires after ~7 days.
+      #
+      - name: Create auth session
         env:
-          PLAYWRIGHT_SESSION: ${{ secrets.PLAYWRIGHT_SESSION }}
+          JWT_SECRET:          ${{ secrets.JWT_SECRET }}
+          AUTH_APP_SLUG:       ${{ vars.AUTH_APP_SLUG || 'timetracker-ng' }}
+          TEST_BASE_URL:       ${{ vars.TEST_BASE_URL || 'https://robomon.boundaryless.com/test/timetracker/public' }}
+          PLAYWRIGHT_SESSION:  ${{ secrets.PLAYWRIGHT_SESSION }}
         run: |
-          mkdir -p testctl-tests/playwright/.auth
-          echo "$PLAYWRIGHT_SESSION" | base64 --decode > testctl-tests/playwright/.auth/session.json
-          echo "✓ Session file written ($(wc -c < testctl-tests/playwright/.auth/session.json) bytes)"
+          if [ -n "$JWT_SECRET" ]; then
+            echo "✓ JWT_SECRET found — generating fresh session via /auth/callback"
+            python testctl-tests/playwright/create_ci_session.py --role admin
+          elif [ -n "$PLAYWRIGHT_SESSION" ]; then
+            echo "⚠️  JWT_SECRET not set — falling back to saved PLAYWRIGHT_SESSION"
+            echo "   Note: this session may be expired. Set JWT_SECRET for reliable CI."
+            mkdir -p testctl-tests/playwright/.auth
+            echo "$PLAYWRIGHT_SESSION" | base64 --decode > testctl-tests/playwright/.auth/session.json
+            echo "✓ Session file written ($(wc -c < testctl-tests/playwright/.auth/session.json) bytes)"
+          else
+            echo "❌ Neither JWT_SECRET nor PLAYWRIGHT_SESSION secret is set."
+            echo "   Add JWT_SECRET to GitHub Secrets (Settings → Secrets → Actions)."
+            exit 1
+          fi
 
       # ── 5. Run tests ─────────────────────────────────────────────────────────
       - name: Run Playwright tests — ${{ matrix.group }}
