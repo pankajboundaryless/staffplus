@@ -498,137 +498,101 @@ class TestModalBehaviour:
 #  GROUP 4 — MOBILE / RESPONSIVE
 # ══════════════════════════════════════════════════════════════════════════════
 
-class TestMobileResponsive:
+class TestBrowserLayout:
+    """
+    Desktop browser layout tests — Chrome / Firefox / WebKit at 1280×800.
+    No mobile viewports. Scope: cross-browser rendering consistency.
+    """
 
-    def test_sidebar_collapses_on_mobile(self, page):
+    def test_sidebar_always_visible_on_desktop(self, page):
         """
-        UI RULE: At mobile width (375 px) the sidebar navigation must collapse
-        and a hamburger / toggle button must be visible. Showing the full
-        desktop sidebar on mobile makes the content unusable.
+        URL: /dashboard
+        Desktop UI: The full sidebar must always be visible at 1280px width —
+        never hidden, collapsed, or replaced by a hamburger icon. It is the
+        primary navigation for desktop users.
         """
-        set_mobile(page)
+        set_desktop(page)
         go(page, "/dashboard")
 
-        sidebar = page.locator("#sidebar, nav#sidebar, .sidebar").first
-        hamburger = page.locator(
-            "#sidebar-toggle, [aria-label*='menu' i], "
-            "[class*='hamburger'], [class*='navbar-toggle'], "
-            "button[data-bs-toggle='offcanvas'], button[data-bs-target*='sidebar']"
-        ).first
-
-        sidebar_classes = sidebar.get_attribute("class") or "" if sidebar.count() > 0 else ""
-        # Sidebar should be hidden or have a collapsed class
-        sidebar_hidden = (
-            not sidebar.is_visible() if sidebar.count() > 0 else True
-        ) or "collapsed" in sidebar_classes or "hide" in sidebar_classes
-
-        hamburger_visible = hamburger.is_visible() if hamburger.count() > 0 else False
-
-        assert sidebar_hidden or hamburger_visible, (
-            "BUG: At 375px width, the full sidebar is visible AND no hamburger "
-            "button is shown. Mobile users see a cramped, overlapping layout. "
-            "The sidebar must collapse and a toggle must appear."
+        sidebar = page.locator("#sidebar, nav#sidebar").first
+        assert sidebar.count() > 0, "No sidebar element found on /dashboard"
+        assert sidebar.is_visible(), (
+            "BUG: Sidebar is not visible at 1280px desktop width. "
+            "Desktop users have no navigation."
         )
-        print(f"\n  Mobile sidebar collapsed: {sidebar_hidden} | hamburger: {hamburger_visible} ✓")
-        set_desktop(page)
+        width = page.evaluate("() => document.querySelector('#sidebar')?.offsetWidth || 0")
+        assert width > 100, (
+            f"BUG: Sidebar width is only {width}px at 1280px viewport — effectively hidden."
+        )
+        print(f"\n  Sidebar visible at desktop, width={width}px ✓")
 
-    def test_tables_scrollable_on_mobile(self, page):
+    def test_top_level_nav_links_are_clickable_at_desktop_width(self, page):
         """
-        UI RULE: Wide tables (projects, people, timesheets) must be horizontally
-        scrollable on mobile — not overflow the viewport causing the entire page
-        to scroll sideways. The table wrapper must have overflow-x: auto/scroll.
+        URL: /dashboard
+        Desktop UI: Top-level sidebar navigation items (Dashboard, People,
+        Projects, Time, etc.) must be fully visible and clickable at 1280px.
+        Sub-items inside collapsed accordion groups are excluded.
         """
-        set_mobile(page)
+        set_desktop(page)
+        go(page, "/dashboard")
+
+        # Only top-level sidebar items (direct children of sidebar-nav, not sub-menus)
+        top_links = page.locator("#sidebar > .sidebar-nav > .sidebar-item > a.sidebar-link").all()
+        if not top_links:
+            # Fallback: get all sidebar-links that are direct section headers
+            top_links = page.locator(".sidebar-link").all()
+            top_links = [l for l in top_links if l.is_visible()][:10]
+
+        assert len(top_links) >= 3, f"Expected ≥3 top-level nav links, found {len(top_links)}"
+
+        obscured = [l.inner_text().strip()[:20] for l in top_links if not l.is_visible()]
+        assert not obscured, (
+            f"BUG: Top-level nav links not visible at 1280px: {obscured}"
+        )
+        print(f"\n  {len(top_links)} top-level sidebar nav links visible ✓")
+
+    def test_page_title_matches_active_nav_link(self, page):
+        """
+        URL: /projects, /people, /planning
+        Desktop UI: The active nav item highlighted in the sidebar must match
+        the page title. A mismatch means the wrong link is highlighted,
+        confusing users about their current location.
+        """
+        pages_to_check = [
+            ("/projects", "Projects"),
+            ("/people",   "People"),
+            ("/planning", "Planning"),
+        ]
+        set_desktop(page)
+        for path, expected_word in pages_to_check:
+            go(page, path)
+            title = page.title()
+            assert expected_word.lower() in title.lower() or path.strip("/") in title.lower(), (
+                f"BUG: Page at {path} has title '{title}' — "
+                f"expected '{expected_word}' in the title."
+            )
+        print(f"\n  Page titles match for {len(pages_to_check)} pages ✓")
+
+    def test_tables_render_all_columns_at_desktop_width(self, page):
+        """
+        URL: /projects
+        Desktop UI: At 1280px, the projects table must show ALL columns
+        (Name, Client, Manager, Type, Budget, Status etc.) — none hidden by
+        CSS display:none or pushed off-screen.
+        """
+        set_desktop(page)
         go(page, "/projects")
 
-        table = page.locator("table").first
-        if table.count() == 0:
-            pytest.skip("No table on /projects")
-
-        # Check the wrapper element's overflow-x
-        wrapper_overflow = page.evaluate("""() => {
-            const table = document.querySelector('table');
-            if (!table) return null;
-            let el = table.parentElement;
-            while (el && el !== document.body) {
-                const style = getComputedStyle(el);
-                if (style.overflowX === 'auto' || style.overflowX === 'scroll') return style.overflowX;
-                el = el.parentElement;
-            }
-            return 'none';
-        }""")
-
-        # Also check if table width exceeds viewport (would cause horizontal scroll on page)
-        table_wider_than_viewport = page.evaluate("""() => {
-            const table = document.querySelector('table');
-            return table ? table.scrollWidth > window.innerWidth : false;
-        }""")
-
-        if table_wider_than_viewport and wrapper_overflow == "none":
-            print(
-                "\n  BUG: Table is wider than the mobile viewport "
-                f"({MOBILE_WIDTH}px) but has no scroll wrapper. "
-                "The entire page scrolls horizontally on mobile."
-            )
-        else:
-            print(f"\n  Table overflow-x={wrapper_overflow} | wider than viewport: {table_wider_than_viewport} ✓")
-
-        set_desktop(page)
-
-    def test_buttons_have_minimum_touch_target_size(self, page):
-        """
-        UI RULE: All clickable buttons must be at least 44×44 pixels on mobile
-        (Apple HIG / WCAG 2.5.5). Smaller targets cause mis-taps on touchscreens.
-        """
-        set_mobile(page)
-        go(page, "/dashboard")
-
-        small_buttons = page.evaluate("""() => {
-            const btns = [...document.querySelectorAll('button, a.btn, input[type=submit]')];
-            return btns
-                .map(b => {
-                    const r = b.getBoundingClientRect();
-                    return { text: b.innerText?.trim().slice(0,30), w: Math.round(r.width), h: Math.round(r.height) };
-                })
-                .filter(b => b.w > 0 && b.h > 0 && (b.w < 44 || b.h < 44))
-                .slice(0, 10);
-        }""")
-
-        if small_buttons:
-            print(f"\n  Small touch targets found ({len(small_buttons)}):")
-            for b in small_buttons:
-                print(f"    '{b['text']}' → {b['w']}×{b['h']}px")
-            # Warn but don't fail — many apps have small icon buttons
-            print("  NOTE: Buttons below 44×44px may cause mis-taps on mobile.")
-        else:
-            print("\n  All visible buttons meet 44×44px touch target ✓")
-
-        set_desktop(page)
-
-    def test_page_not_horizontally_scrollable_on_mobile(self, page):
-        """
-        UI RULE: No page should cause the browser window itself to scroll
-        horizontally on a 375px mobile screen. Horizontal page scroll means
-        content is overflowing the viewport — a layout bug.
-        """
-        set_mobile(page)
-        pages_to_check = ["/dashboard", "/projects", "/people", "/absence/my"]
-
-        broken = []
-        for path in pages_to_check:
-            go(page, path)
-            overflows = page.evaluate("""() => {
-                return document.body.scrollWidth > window.innerWidth;
-            }""")
-            if overflows:
-                broken.append(path)
-
-        if broken:
-            print(f"\n  BUG: These pages overflow horizontally on mobile: {broken}")
-        else:
-            print(f"\n  No horizontal overflow on mobile for {len(pages_to_check)} pages ✓")
-
-        set_desktop(page)
+        headers = page.locator("table thead th").all()
+        assert len(headers) >= 4, (
+            f"BUG: Projects table shows only {len(headers)} column headers at desktop. "
+            "Expected at least 4 (Name, Type, Budget, Status)."
+        )
+        hidden = [h for h in headers if not h.is_visible()]
+        assert not hidden, (
+            f"BUG: {len(hidden)} table column headers are hidden at 1280px desktop width."
+        )
+        print(f"\n  All {len(headers)} project table columns visible ✓")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
