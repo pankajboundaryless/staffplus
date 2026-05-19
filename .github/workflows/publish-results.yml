@@ -1,0 +1,149 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# Publish Test Results Dashboard → GitHub Pages
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# After the main playwright-tests.yml workflow finishes, this workflow:
+#   1. Downloads all 4 parallel test-group HTML reports
+#   2. Merges them into a single index.html dashboard
+#   3. Publishes to GitHub Pages
+#
+# Live URL (once enabled):
+#   https://pankajboundaryless.github.io/staffplus/
+#
+# ENABLE GITHUB PAGES (one-time):
+#   Repo → Settings → Pages → Source = "GitHub Actions"
+# ══════════════════════════════════════════════════════════════════════════════
+
+name: Publish Results Dashboard
+
+on:
+  workflow_run:
+    workflows: ["Playwright E2E Tests"]
+    types: [completed]
+  workflow_dispatch:       # manual trigger
+
+permissions:
+  contents: read
+  pages:    write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Build & Publish Dashboard
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Try to download artifacts from the triggering workflow run
+      - name: Download test reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: playwright-report-*
+          merge-multiple: true
+          path: site/reports/
+        continue-on-error: true   # OK if no artifacts yet (first run)
+
+      # Also run tests directly if triggered manually
+      - name: Set up Python (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: testctl-tests/playwright/requirements.txt
+
+      - name: Install deps & browsers (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          pip install -r testctl-tests/playwright/requirements.txt
+          playwright install chromium --with-deps
+
+      - name: Generate fresh session (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          JWT_SECRET:    ${{ secrets.JWT_SECRET }}
+          AUTH_APP_SLUG: ${{ vars.AUTH_APP_SLUG || 'timetracker-ng' }}
+          TEST_BASE_URL: ${{ vars.TEST_BASE_URL || 'https://robomon.boundaryless.com/test/timetracker/public' }}
+        run: python testctl-tests/playwright/create_ci_session.py --role admin
+
+      - name: Run tests & collect schema (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        working-directory: testctl-tests/playwright
+        run: |
+          python -m pytest \
+            test_01_login.py test_02_dashboard.py test_03_people.py \
+            test_04_projects.py test_05_time.py test_06_invoicing.py \
+            test_07_security.py test_08_ui_ux.py test_09_reports_admin.py \
+            test_10_business_logic.py test_11_leave_balance.py \
+            test_12_project_booking_edge_cases.py test_13_ui_edge_cases.py \
+            --tb=no -q || true
+          mkdir -p ../../.github/../site/reports
+          cp reports/results_schema.html ../../../site/index.html 2>/dev/null || true
+          cp reports/results_schema.json ../../../site/results.json 2>/dev/null || true
+
+      # Build the dashboard index.html from available reports
+      - name: Build dashboard
+        run: |
+          mkdir -p site
+
+          # If schema HTML already exists from the run, use it directly
+          SCHEMA_HTML="testctl-tests/playwright/reports/results_schema.html"
+          if [ -f "$SCHEMA_HTML" ]; then
+            cp "$SCHEMA_HTML" site/index.html
+            echo "✓ Used results_schema.html as dashboard"
+          elif ls site/reports/*.html 2>/dev/null; then
+            # Fallback: stitch together individual group reports
+            echo "Building from group reports..."
+            cat site/reports/*.html > site/index.html
+          else
+            # Placeholder if no reports available yet
+            cat > site/index.html << 'HTML'
+          <!DOCTYPE html><html><head><meta charset="UTF-8">
+          <title>StaffPlus E2E Results</title>
+          <style>
+            body{font-family:system-ui;display:flex;align-items:center;justify-content:center;
+                 min-height:100vh;margin:0;background:#f8fafc}
+            .box{text-align:center;padding:40px;background:#fff;border-radius:16px;box-shadow:0 4px 24px #0002}
+            h1{color:#0f172a;font-size:1.6rem;margin:0 0 8px}
+            p{color:#64748b;margin:0 0 24px}
+            a{display:inline-block;padding:10px 24px;background:#0f172a;color:#fff;
+              border-radius:8px;text-decoration:none;font-weight:600}
+          </style></head><body>
+          <div class="box">
+            <h1>🎭 StaffPlus E2E Dashboard</h1>
+            <p>No test results yet. Trigger the Playwright workflow to generate results.</p>
+            <a href="../../actions">View Actions</a>
+          </div></body></html>
+          HTML
+          fi
+
+          # Copy JSON schema alongside
+          cp testctl-tests/playwright/reports/results_schema.json site/results.json 2>/dev/null || echo "{}" > site/results.json
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Print dashboard URL
+        run: |
+          echo "════════════════════════════════════════"
+          echo "  ✅ Dashboard published!"
+          echo "  🌐 URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "════════════════════════════════════════"

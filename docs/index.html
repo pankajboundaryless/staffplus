@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>StaffPlus E2E Test Results</title>
+<style>
+  body { font-family: Inter, system-ui, sans-serif; margin: 0; background: #f8fafc; color: #1e293b; }
+  .header { background: #0f172a; color: #fff; padding: 32px 40px; }
+  .header h1 { margin: 0 0 4px; font-size: 1.5rem; }
+  .header p  { margin: 0; color: #94a3b8; font-size: .9rem; }
+  .stats { display: flex; gap: 16px; padding: 24px 40px; background: #fff; border-bottom: 1px solid #e2e8f0; }
+  .stat { text-align: center; padding: 16px 28px; border-radius: 10px; }
+  .stat .n { font-size: 2.2rem; font-weight: 700; line-height: 1; }
+  .stat .l { font-size: .78rem; color: #64748b; margin-top: 4px; text-transform: uppercase; letter-spacing: .05em; }
+  .total   { background: #f1f5f9; }
+  .pass    { background: #f0fdf4; color: #166534; }
+  .fail    { background: #fef2f2; color: #991b1b; }
+  .skip    { background: #fefce8; color: #854d0e; }
+  table  { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th     { background: #0f172a; color: #94a3b8; font-size: .72rem; text-transform: uppercase;
+             letter-spacing: .06em; padding: 10px 12px; text-align: left; position: sticky; top: 0; }
+  td     { padding: 9px 12px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  .wrap  { padding: 0 40px 40px; }
+  .meta  { padding: 12px 40px; font-size: .78rem; color: #64748b; background:#fff; border-bottom:1px solid #e2e8f0; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎭 StaffPlus — Playwright E2E Test Results</h1>
+  <p>Generated: 2026-05-19 21:43:57 UTC · Browser: chromium (desktop 1280×800)</p>
+</div>
+<div class="stats">
+  <div class="stat total"><div class="n">291</div><div class="l">Total</div></div>
+  <div class="stat pass" ><div class="n">261</div><div class="l">Passed</div></div>
+  <div class="stat fail" ><div class="n">18</div><div class="l">Failed</div></div>
+  <div class="stat skip" ><div class="n">12</div><div class="l">Skipped</div></div>
+</div>
+<div class="meta">
+  Base URL: <code>https://robomon.boundaryless.com/test/timetracker/public</code> &nbsp;|&nbsp;
+  Pass rate: <strong>90%</strong>
+</div>
+<div class="wrap">
+<table>
+  <thead>
+    <tr>
+      <th style="width:46px">#</th>
+      <th style="width:160px">URL</th>
+      <th>Description</th>
+      <th style="width:200px">File · Class</th>
+      <th style="width:90px">Status</th>
+      <th style="width:60px">Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">001</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Login page renders with expected elements.<br><span style="color:#dc2626;font-size:.75rem">E    +        where <bound method Page.locator of <Page url='https://auth.boundaryless.com/public/login_form.php?app=timetracker-ng-test'>> = <Page url='https://auth.boundaryless.com/public/login_form</span></td>
+          <td style="font-size:.78rem;color:#475569">test_01_login.py<br><span style="color:#94a3b8">TestLoginPage</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.91s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">002</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Wrong password shows error message, does not redirect.</td>
+          <td style="font-size:.78rem;color:#475569">test_01_login.py<br><span style="color:#94a3b8">TestLoginPage</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.149s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">003</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Submitting empty form does not log in.</td>
+          <td style="font-size:.78rem;color:#475569">test_01_login.py<br><span style="color:#94a3b8">TestLoginPage</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.652s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">004</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Accessing dashboard without login redirects to auth.</td>
+          <td style="font-size:.78rem;color:#475569">test_01_login.py<br><span style="color:#94a3b8">TestLoginPage</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.907s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">005</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Authenticated user reaches dashboard successfully.</td>
+          <td style="font-size:.78rem;color:#475569">test_01_login.py<br><span style="color:#94a3b8">TestAuthenticatedSession</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.646s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">006</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Navigating to different pages keeps session alive.</td>
+          <td style="font-size:.78rem;color:#475569">test_01_login.py<br><span style="color:#94a3b8">TestAuthenticatedSession</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.65s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">007</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">After logout, dashboard access redirects to login.</td>
+          <td style="font-size:.78rem;color:#475569">test_01_login.py<br><span style="color:#94a3b8">TestAuthenticatedSession</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.813s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">008</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestDashboardLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.621s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">009</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestDashboardLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.659s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">010</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestDashboardLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.664s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">011</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestDashboardLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.606s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">012</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestDashboardLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.72s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">013</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestDashboardLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.634s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">014</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestNavigationMenu</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.623s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">015</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestNavigationMenu</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.718s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">016</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestNavigationMenu</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.658s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">017</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestNavigationMenu</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.357s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">018</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.606s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">019</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.623s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">020</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.685s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">021</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.655s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">022</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.674s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">023</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.62s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">024</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.63s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">025</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.683s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">026</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.75s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">027</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every module page must load without a 500 error.</td>
+          <td style="font-size:.78rem;color:#475569">test_02_dashboard.py<br><span style="color:#94a3b8">TestAllModuleLinks</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.648s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">028</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPeopleList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.632s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">029</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">People list renders cards (17 people in test data).</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPeopleList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.614s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">030</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Page shows total people count.</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPeopleList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.634s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">031</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPeopleList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.682s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">032</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPeopleList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.759s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">033</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPeopleList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.733s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">034</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Status filter dropdown is on people page.</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPeopleList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.635s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">035</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestCreatePerson</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.656s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">036</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestCreatePerson</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.847s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">037</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestCreatePerson</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.685s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">038</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestCreatePerson</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.733s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">039</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">XSS payload stored and displayed safely (escaped).</td>
+          <td style="font-size:.78rem;color:#475569">test_03_people.py<br><span style="color:#94a3b8">TestPersonXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.574s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">040</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestProjectsList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.652s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">041</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">At least one project exists (test data).</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestProjectsList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.694s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">042</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">ACTIVE status badge is rendered for active projects.</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestProjectsList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.619s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">043</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestProjectsList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.644s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">044</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestCreateProject</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.662s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">045</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Empty form submission shows validation.</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestCreateProject</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.789s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">046</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Create a project with minimum required fields.</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestCreateProject</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.77s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">047</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Created project appears in projects list.</td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestCreateProject</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.608s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">048</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Clicking a project opens its detail page.<br><span style="color:#dc2626;font-size:.75rem">E   playwright._impl._errors.Error: Locator.count: Unexpected token "=" while parsing css selector ".alert-danger, text=500". Did you mean to CSS.escape it?</span></td>
+          <td style="font-size:.78rem;color:#475569">test_04_projects.py<br><span style="color:#94a3b8">TestProjectDetail</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.274s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">049</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimePages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.651s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">050</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimePages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.645s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">051</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimePages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.667s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">052</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimePages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.624s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">053</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Timesheet page shows Mon-Fri columns.<br><span style="color:#dc2626;font-size:.75rem">E   assert 0 >= 3</span></td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimePages</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.636s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">054</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimePages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.683s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">055</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Book time form has project, date, and hours fields.</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestBookTime</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.616s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">056</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Book time page has multiple day-cards each with a project select.</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestBookTime</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.88s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">057</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Book a time entry — page has multiple day-cards, use first card.</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestBookTime</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.682s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">058</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestBookTime</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.659s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">059</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimeApprovals</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.683s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">060</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_05_time.py<br><span style="color:#94a3b8">TestTimeApprovals</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.624s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">061</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoicingPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.622s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">062</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoicingPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.628s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">063</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoicingPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.6s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">064</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoicingPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.62s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">065</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoicingPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.624s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">066</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoicingPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.72s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">067</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoiceList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.631s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">068</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoiceList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.614s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">069</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestInvoiceList</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.714s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">070</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestCreateInvoice</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.7s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">071</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestCreateInvoice</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.644s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">072</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—<br><span style="color:#dc2626;font-size:.75rem">E          - waiting 500ms</span></td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestCreateInvoice</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">20.691s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">073</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—<br><span style="color:#dc2626;font-size:.75rem">E          - waiting 500ms</span></td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestCreateInvoice</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">21.263s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">074</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_06_invoicing.py<br><span style="color:#94a3b8">TestCreateInvoice</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.714s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">075</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">The exact payload must not appear unescaped in the DOM.</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.65s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">076</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">The exact payload must not appear unescaped in the DOM.</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.67s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">077</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">The exact payload must not appear unescaped in the DOM.</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.704s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">078</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">The exact payload must not appear unescaped in the DOM.</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.659s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">079</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—<br><span style="color:#dc2626;font-size:.75rem">E     ...Full output truncated (1234 lines hidden), use '-vv' to show</span></td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.764s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">080</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—<br><span style="color:#dc2626;font-size:.75rem">E     ...Full output truncated (1234 lines hidden), use '-vv' to show</span></td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.643s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">081</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—<br><span style="color:#dc2626;font-size:.75rem">E     ...Full output truncated (1234 lines hidden), use '-vv' to show</span></td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.656s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">082</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—<br><span style="color:#dc2626;font-size:.75rem">E     ...Full output truncated (1234 lines hidden), use '-vv' to show</span></td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestXSS</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.671s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">083</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.649s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">084</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.68s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">085</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.708s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">086</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.671s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">087</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.675s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">088</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.665s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">089</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.62s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">090</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.609s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">091</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.632s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">092</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSQLInjection</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.629s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">093</td>
+          <td style="font-family:monospace;font-size:.78rem">/session</td>
+          <td style="font-size:.82rem">POST without CSRF/session must not succeed (302 to login, 400, or 403).</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestCSRF</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.103s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">094</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestCSRF</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.084s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">095</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.656s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">096</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.696s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">097</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.732s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">098</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.679s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">099</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.732s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">100</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.717s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">101</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.802s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">102</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.078s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">103</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestAuthBypass</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.864s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">104</td>
+          <td style="font-family:monospace;font-size:.78rem">/people/1</td>
+          <td style="font-size:.82rem">Accessing /people/1 through /people/5 must not 500.</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestIDOR</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.887s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">105</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestIDOR</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">3.203s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">106</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSecurityHeaders</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.193s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">107</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSecurityHeaders</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.537s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">108</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSecurityHeaders</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.617s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">109</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Login redirect must not allow off-site redirect to evil.com.</td>
+          <td style="font-size:.78rem;color:#475569">test_07_security.py<br><span style="color:#94a3b8">TestSecurityHeaders</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.689s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">110</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.643s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">111</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.627s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">112</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.628s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">113</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.614s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">114</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.608s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">115</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.734s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">116</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.616s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">117</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.655s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">118</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.674s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">119</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.62s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">120</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.633s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">121</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.705s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">122</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.605s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">123</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.666s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">124</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.672s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">125</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.663s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">126</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.677s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">127</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.745s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">128</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.658s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">129</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.62s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">130</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.619s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">131</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.651s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">132</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.608s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">133</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.611s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">134</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.613s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">135</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.652s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">136</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.924s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">137</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.664s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">138</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page must load without a 500 server error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.613s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">139</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.615s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">140</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.687s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">141</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.617s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">142</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.624s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">143</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.587s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">144</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.618s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">145</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.611s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">146</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.642s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">147</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.597s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">148</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.625s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">149</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.651s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">150</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.59s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">151</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.713s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">152</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.64s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">153</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.622s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">154</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.668s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">155</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.661s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">156</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.651s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">157</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.618s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">158</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.698s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">159</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.599s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">160</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.595s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">161</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.595s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">162</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.635s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">163</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.602s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">164</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.621s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">165</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.61s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">166</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.71s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">167</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Every page has a non-empty browser title.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestAllPagesNoServerError</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.62s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">168</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">404 shows a readable message, not a raw PHP error.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestFriendly404</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.555s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">169</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Extremely long name input handled without 500.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestFormEdgeCases</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.929s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">170</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Special characters in search don't crash the app.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestFormEdgeCases</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.509s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">171</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Far-future date is handled gracefully.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestFormEdgeCases</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.644s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">172</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—<br><span style="color:#dc2626;font-size:.75rem">E          - waiting 500ms</span></td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestFormEdgeCases</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">20.82s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">173</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestResponsiveLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.804s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">174</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestResponsiveLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.645s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">175</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestResponsiveLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.607s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">176</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">No horizontal scrollbar at any viewport.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestResponsiveLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.609s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">177</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">No horizontal scrollbar at any viewport.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestResponsiveLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.667s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">178</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">No horizontal scrollbar at any viewport.</td>
+          <td style="font-size:.78rem;color:#475569">test_08_ui_ux.py<br><span style="color:#94a3b8">TestResponsiveLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.619s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">179</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestReports</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.66s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">180</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestReports</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.681s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">181</td>
+          <td style="font-family:monospace;font-size:.78rem">/download</td>
+          <td style="font-size:.82rem">Clicking export/download must not 500.</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestReports</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.631s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">182</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.694s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">183</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.613s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">184</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.608s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">185</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.681s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">186</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.614s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">187</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.623s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">188</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.691s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">189</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.635s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">190</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.664s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">191</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.646s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">192</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.617s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">193</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.608s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">194</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAdminPages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.707s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">195</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestCustomers</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.623s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">196</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestCustomers</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.632s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">197</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestCustomers</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.735s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">198</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestCustomers</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.778s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">199</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.638s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">200</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.638s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">201</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.759s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">202</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.596s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">203</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.608s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">204</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.637s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">205</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.606s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">206</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.62s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">207</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.615s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">208</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_09_reports_admin.py<br><span style="color:#94a3b8">TestAbsencePlanning</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.607s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">209</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Planning board is accessible.</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestOverAllocation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.715s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">210</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Assigning a person at 80% on a project is accepted.</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestOverAllocation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.066s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">211</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Assigning same person at 60% on overlapping dates</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestOverAllocation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.068s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">212</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">My absence page is accessible.</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestAbsencePlanningConflict</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.637s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">213</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Employee can submit an absence request that goes to 'pending' state.</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestAbsencePlanningConflict</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.852s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">214</td>
+          <td style="font-family:monospace;font-size:.78rem">/approved</td>
+          <td style="font-size:.82rem">BUSINESS RULE: If an employee has a pending/approved absence for Sept 1-5,</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestAbsencePlanningConflict</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.119s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">215</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: After an employee submits a week, an approval request</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestTimesheetApprovalChain</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">7.048s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">216</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">Submit a full week and verify an approval request is created.</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestTimesheetApprovalChain</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.626s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">217</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: After a manager approves a timesheet,</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestTimesheetApprovalChain</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.668s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">218</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: If a manager REJECTS a timesheet, the employee must</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestTimesheetApprovalChain</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.685s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">219</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">—</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestInvoiceFromTimesheets</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.625s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">220</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: A newly created invoice must start as 'draft'.<br><span style="color:#dc2626;font-size:.75rem">E   assert 'draft' in '<html><head></head><body><pre style="background:#1a1a2e;color:#e94560;padding:2rem;font-size:.85rem">sqlstate[42s22]: column not found: 1054 unknown column \'rcl.hourly_rate\' i</span></td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestInvoiceFromTimesheets</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.74s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">221</td>
+          <td style="font-family:monospace;font-size:.78rem">/sent/paid/overdue</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Invoice list must show status clearly (draft/sent/paid/overdue).</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestInvoiceFromTimesheets</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.595s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">222</td>
+          <td style="font-family:monospace;font-size:.78rem">/services</td>
+          <td style="font-size:.82rem">BUSINESS RULE: An invoice detail must have a line items section where</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestInvoiceFromTimesheets</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.229s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">223</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: The timesheets page must only show the current user's</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestRoleDataIsolation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.636s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">224</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Admin-only routes must return 403 or redirect to an</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestRoleDataIsolation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.64s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">225</td>
+          <td style="font-family:monospace;font-size:.78rem">/people/999999</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Accessing /people/999999 (non-existent ID) must return</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestRoleDataIsolation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.559s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">226</td>
+          <td style="font-family:monospace;font-size:.78rem">/invoicing/999999</td>
+          <td style="font-size:.82rem">Accessing /invoicing/999999 must return 404, not a 500 crash.</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestRoleDataIsolation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.545s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">227</td>
+          <td style="font-family:monospace;font-size:.78rem">/projects/999999</td>
+          <td style="font-size:.82rem">Accessing /projects/999999 must return 404, not a 500 crash.</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestRoleDataIsolation</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.547s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">228</td>
+          <td style="font-family:monospace;font-size:.78rem">/people/</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Accessing a person's profile via direct URL</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestRoleDataIsolation</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.204s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">229</td>
+          <td style="font-family:monospace;font-size:.78rem">/people/1</td>
+          <td style="font-size:.82rem">Access /people/1 directly — profile must load without 500 and</td>
+          <td style="font-size:.78rem;color:#475569">test_10_business_logic.py<br><span style="color:#94a3b8">TestRoleDataIsolation</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.566s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">230</td>
+          <td style="font-family:monospace;font-size:.78rem">/absence/my</td>
+          <td style="font-size:.82rem">Pre-condition: /absence/my must show entitlement stat cards.</td>
+          <td style="font-size:.78rem;color:#475569">test_11_leave_balance.py<br><span style="color:#94a3b8">TestLeaveBalance</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.69s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">231</td>
+          <td style="font-family:monospace;font-size:.78rem">/submitted</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Submitting a leave request (status = pending/submitted)</td>
+          <td style="font-size:.78rem;color:#475569">test_11_leave_balance.py<br><span style="color:#94a3b8">TestLeaveBalance</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">3.181s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">232</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Once an admin APPROVES a leave request,<br><span style="color:#dc2626;font-size:.75rem">E   assert 18.8 < 18.8</span></td>
+          <td style="font-size:.78rem;color:#475569">test_11_leave_balance.py<br><span style="color:#94a3b8">TestLeaveBalance</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">5.583s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">233</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: If a leave request is REJECTED (declined by manager),</td>
+          <td style="font-size:.78rem;color:#475569">test_11_leave_balance.py<br><span style="color:#94a3b8">TestLeaveBalance</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">5.248s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">234</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: After a leave request is approved, the 'Days taken'<br><span style="color:#dc2626;font-size:.75rem">E   assert 0.0 > 0.0</span></td>
+          <td style="font-size:.78rem;color:#475569">test_11_leave_balance.py<br><span style="color:#94a3b8">TestLeaveBalance</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">4.885s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">235</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: If an employee requests MORE days than their remaining</td>
+          <td style="font-size:.78rem;color:#475569">test_11_leave_balance.py<br><span style="color:#94a3b8">TestLeaveBalance</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">3.191s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">236</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: If a person is assigned to Project A at 80 % AND</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestOverlappingAssignments</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">3.663s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">237</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: A person cannot physically work 100% on two projects</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestOverlappingAssignments</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">3.431s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">238</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: The assign form caps allocation at 200% per assignment,</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestOverlappingAssignments</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">4.878s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">239</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Two assignments for the same person on the same project</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestOverlappingAssignments</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">3.059s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">240</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Project A has a budget of 256h. Assigning a person</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestWorkloadHoursConsistency</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.123s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">241</td>
+          <td style="font-family:monospace;font-size:.78rem">/day</td>
+          <td style="font-size:.82rem">BUSINESS RULE: If a person is assigned at 50 % allocation for 20</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestWorkloadHoursConsistency</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.674s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">242</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Assigning someone with allocation_pct=100 but</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestWorkloadHoursConsistency</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.085s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">243</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Billing classification (Onshore / Offshore) is</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestCrossPayRateBilling</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.712s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">244</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: When an admin overrides the billing classification</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestCrossPayRateBilling</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.826s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">245</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Rate cards have two columns — Onshore and Offshore.</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestCrossPayRateBilling</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.676s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">246</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: The Rate Cards page must show different prices for</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestCrossPayRateBilling</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.806s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">247</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: When creating an assignment, the 'Rate level' field</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestRateLevelOverride</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.097s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">248</td>
+          <td style="font-family:monospace;font-size:.78rem">/profile</td>
+          <td style="font-size:.82rem">BUSINESS RULE: When rate_card_level_id is empty ('— Use person default —'),</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestRateLevelOverride</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.404s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">249</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Submitting a rate_card_level_id that doesn't exist</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestRateLevelOverride</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.419s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">250</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: An assignment where end_date < start_date is</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestInvalidBoundaryInputs</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.414s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">251</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: A single-day assignment (start_date == end_date) should</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestInvalidBoundaryInputs</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.372s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">252</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: The assign form sets max='200' on allocation_pct.</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestInvalidBoundaryInputs</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.468s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">253</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: The form sets min='5' on allocation_pct. Submitting</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestInvalidBoundaryInputs</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.483s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">254</td>
+          <td style="font-family:monospace;font-size:.78rem">/update</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Two assignments for the same person, same project, and</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestInvalidBoundaryInputs</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">4.41s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">255</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Projects have a timeline (start – end date).</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestInvalidBoundaryInputs</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.431s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">256</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: If a person books time on a project they are NOT</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestTimeBookingVsAssignment</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.654s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">257</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Booking 0 hours is meaningless and must be rejected.</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestTimeBookingVsAssignment</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.217s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">258</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Project 14 ends 31 Dec 2026. Booking time for a date</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestTimeBookingVsAssignment</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.207s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">259</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: Negative duration (e.g. '-2:00') must be rejected.</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestTimeBookingVsAssignment</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.256s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">260</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">BUSINESS RULE: The project budget page shows '% used'. After booking</td>
+          <td style="font-size:.78rem;color:#475569">test_12_project_booking_edge_cases.py<br><span style="color:#94a3b8">TestTimeBookingVsAssignment</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.582s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">261</td>
+          <td style="font-family:monospace;font-size:.78rem">/people</td>
+          <td style="font-size:.82rem">UI RULE: Submitting an empty search (or clearing the query) must show</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestSearchAndFilter</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.694s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">262</td>
+          <td style="font-family:monospace;font-size:.78rem">/broken</td>
+          <td style="font-size:.82rem">UI RULE: Typing special characters in the search box must not crash</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestSearchAndFilter</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.724s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">263</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: After submitting a search query, the search box must still</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestSearchAndFilter</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.842s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">264</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: A search that returns no matches must show a friendly</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestSearchAndFilter</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.276s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">265</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: If the people list has a status filter (Active / Inactive),</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestSearchAndFilter</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.647s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">266</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Clicking Submit with required fields empty must visually</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestFormValidationUI</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.388s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">267</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: A project name of 500 characters (far above any reasonable</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestFormValidationUI</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.468s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">268</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: If a user types HTML special characters like < > ' " & in a<br><span style="color:#dc2626;font-size:.75rem">E     ...Full output truncated (918 lines hidden), use '-vv' to show</span></td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestFormValidationUI</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.482s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">269</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Emoji and unicode characters (e.g. 🚀 💼 ✅) in a description</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestFormValidationUI</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.584s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">270</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Pressing the ESC key while a modal is open must close it.<br><span style="color:#dc2626;font-size:.75rem">E   assert 1 == 0</span></td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestModalBehaviour</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.604s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">271</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Clicking outside the modal (on the dark backdrop) must close<br><span style="color:#dc2626;font-size:.75rem">E   assert 1 == 0</span></td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestModalBehaviour</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.627s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">272</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: The × close button inside a modal must close it. This is the</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestModalBehaviour</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.977s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">273</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: After a modal is open, triggering it a second time (via JS<br><span style="color:#dc2626;font-size:.75rem">E   assert 2 <= 1</span></td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestModalBehaviour</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.524s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">274</td>
+          <td style="font-family:monospace;font-size:.78rem">/dashboard</td>
+          <td style="font-size:.82rem">Desktop UI: The full sidebar must always be visible at 1280px width —</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestBrowserLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.661s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">275</td>
+          <td style="font-family:monospace;font-size:.78rem">/dashboard</td>
+          <td style="font-size:.82rem">Desktop UI: Top-level sidebar navigation items (Dashboard, People,</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestBrowserLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.672s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">276</td>
+          <td style="font-family:monospace;font-size:.78rem">/projects,</td>
+          <td style="font-size:.82rem">Desktop UI: The active nav item highlighted in the sidebar must match</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestBrowserLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.947s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">277</td>
+          <td style="font-family:monospace;font-size:.78rem">/projects</td>
+          <td style="font-size:.82rem">Desktop UI: At 1280px, the projects table must show ALL columns</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestBrowserLayout</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.667s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">278</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Status badges must use consistent, meaningful colours:</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestStatusBadgeColours</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.047s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">279</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Badge text must never overflow its container — no text</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestStatusBadgeColours</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.628s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">280</td>
+          <td style="font-family:monospace;font-size:.78rem">/null</td>
+          <td style="font-size:.82rem">UI RULE: Every row in the projects and invoices tables must show</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestStatusBadgeColours</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.348s</td>
+        </tr>
+        <tr style="background:#fef2f2">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">281</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: If the tasks list is empty, the page must show a friendly<br><span style="color:#dc2626;font-size:.75rem">E   assert False</span></td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestEmptyStateDisplays</span></td>
+          <td style="text-align:center;font-weight:600;color:#991b1b">❌ FAILED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.66s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">282</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: An empty invoices list must show a 'Create invoice' button</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestEmptyStateDisplays</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.639s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">283</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: A zero-result search must never leave just the table</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestEmptyStateDisplays</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.852s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">284</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: A project with 0% budget used must show a progress bar at</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestProgressBars</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.323s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">285</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: If a project has used more hours than its budget (>100%),</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestProgressBars</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.954s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">286</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Visiting a URL that doesn't exist must return a proper 404</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestNotFoundPage</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.555s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">287</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: The 404 page must offer a navigation link back to home or</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestNotFoundPage</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.564s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">288</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: The 404 page is shown outside the authenticated app shell.</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestNotFoundPage</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.562s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">289</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: After submitting an absence request form, pressing the browser</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestBrowserBackPRG</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">2.497s</td>
+        </tr>
+        <tr style="background:#f0fdf4">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">290</td>
+          <td style="font-family:monospace;font-size:.78rem">/toast</td>
+          <td style="font-size:.82rem">UI RULE: After successfully submitting a form (e.g. absence request),</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestFlashAlertMessages</span></td>
+          <td style="text-align:center;font-weight:600;color:#166534">✅ PASSED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">1.845s</td>
+        </tr>
+        <tr style="background:#fefce8">
+          <td style="color:#64748b;font-size:.8rem;text-align:center">291</td>
+          <td style="font-family:monospace;font-size:.78rem">—</td>
+          <td style="font-size:.82rem">UI RULE: Flash / alert messages must have a × dismiss button.</td>
+          <td style="font-size:.78rem;color:#475569">test_13_ui_edge_cases.py<br><span style="color:#94a3b8">TestFlashAlertMessages</span></td>
+          <td style="text-align:center;font-weight:600;color:#854d0e">⏭️ SKIPPED</td>
+          <td style="text-align:right;color:#94a3b8;font-size:.78rem">0.644s</td>
+        </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>
