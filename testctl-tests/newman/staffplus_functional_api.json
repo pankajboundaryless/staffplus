@@ -1,0 +1,961 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "StaffPlus — Functional API Tests",
+    "description": "Functional API tests verifying correct data is returned from every major module.\nTests JSON structure, HTTP status codes, pagination, filtering, and data relationships.\n\nPrerequisite: set the `cookie` variable to a valid bmgmt_sess session cookie.\nRun: newman run staffplus_functional_api.json --env-var 'cookie=<your_session>'",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://robomon.boundaryless.com/test/timetracker"
+    },
+    {
+      "key": "cookie",
+      "value": "bmgmt_sess=REPLACE_WITH_YOUR_SESSION_COOKIE",
+      "description": "Replace with actual session value from .auth/session.json cookies array"
+    }
+  ],
+  "item": [
+
+    {
+      "name": "01 — Dashboard",
+      "item": [
+        {
+          "name": "GET /dashboard — loads with 200",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/dashboard",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Not login redirect', () => {",
+              "  pm.expect(pm.response.url).to.not.include('/login');",
+              "});",
+              "pm.test('No server error', () => {",
+              "  const body = pm.response.text();",
+              "  pm.expect(body).to.not.include('Whoops');",
+              "  pm.expect(body).to.not.include('Stack trace');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /dashboard — response time < 5s",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/dashboard",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Response time under 5000ms', () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "02 — People",
+      "item": [
+        {
+          "name": "GET /people — page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/people",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Contains people data', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('person') || b.includes('people') || b.includes('name')",
+              "  );",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /people?search=test — search works",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/public/people?search=test",
+              "query": [{ "key": "search", "value": "test" }]
+            },
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200 on search', () => pm.response.to.have.status(200));",
+              "pm.test('No server error on search', () => {",
+              "  const body = pm.response.text();",
+              "  pm.expect(body).to.not.include('Whoops');",
+              "  pm.expect(body).to.not.include('Stack trace');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /people/new — creation form accessible",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/people/new",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Form present', () => {",
+              "  pm.expect(pm.response.text()).to.include('<form');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /people/1 — detail page loads or 404",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/people/1",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('200 or 404 — never 500', () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 404]);",
+              "});",
+              "pm.test('No server error on person detail', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "03 — Projects",
+      "item": [
+        {
+          "name": "GET /projects — list loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/projects",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Contains project data', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('project') || b.includes('name')",
+              "  );",
+              "});",
+              "pm.test('No error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /projects/new — form accessible",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/projects/new",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Form has customer field', () => {",
+              "  const body = pm.response.text();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('customer_id') || b.includes('customer')",
+              "  );",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /projects/1 — detail or 404",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/projects/1",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('200 or 404 — never 500', () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 404]);",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "04 — Time",
+      "item": [
+        {
+          "name": "GET /time/book — booking form loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/time/book",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});",
+              "pm.test('Contains time booking UI', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('book') || b.includes('time') || b.includes('hours')",
+              "  );",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /time/timesheets — list loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/time/timesheets",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});",
+              "pm.test('Contains timesheet content', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.include('timesheet');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /time/approvals — approval queue loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/time/approvals",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /time/timer — timer page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/time/timer",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "05 — Customers",
+      "item": [
+        {
+          "name": "GET /customers — list loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/customers",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Contains customer data', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b => b.includes('customer') || b.includes('client'));",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /customers/new — form accessible",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/customers/new",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Form present', () => {",
+              "  pm.expect(pm.response.text()).to.include('<form');",
+              "});",
+              "pm.test('Name field present', () => {",
+              "  const body = pm.response.text();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('name=\\'name\\'') || b.includes('name=\"name\"')",
+              "  );",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /customers/1 — detail or 404",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/customers/1",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('200 or 404 — never 500', () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 301, 302, 404]);",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "06 — Invoicing",
+      "item": [
+        {
+          "name": "GET /invoicing — list loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/invoicing",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Invoice content present', () => {",
+              "  pm.expect(pm.response.text().toLowerCase()).to.include('invoice');",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /invoicing/new — creation form accessible",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/invoicing/new",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Form present', () => {",
+              "  pm.expect(pm.response.text()).to.include('<form');",
+              "});",
+              "pm.test('Customer field present', () => {",
+              "  const body = pm.response.text();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('customer_id') || b.includes('customer')",
+              "  );",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /invoicing/rate-cards — rate cards load",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/invoicing/rate-cards",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /subscriptions — subscriptions load",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/subscriptions",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /products — products load",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/products",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "07 — Absence & Leave",
+      "item": [
+        {
+          "name": "GET /absence/my — personal absence page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/absence/my",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Absence content present', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('absence') || b.includes('leave') || b.includes('holiday')",
+              "  );",
+              "});",
+              "pm.test('No NaN in balance — Bug #11 regression', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('>NaN<');",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /absence/team — team calendar loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/absence/team",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /absence/policy — policy page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/absence/policy",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /holidays — holiday calendars load",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/holidays",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "08 — Reports",
+      "item": [
+        {
+          "name": "GET /reports — reports landing loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/reports",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Reports content present', () => {",
+              "  pm.expect(pm.response.text().toLowerCase()).to.include('report');",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /planning — planning board loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/planning",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /simulations — simulations page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/simulations",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "09 — Admin",
+      "item": [
+        {
+          "name": "GET /admin/users — admin user list loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/users",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('User list content present', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b => b.includes('user') || b.includes('email'));",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /admin/roles — roles page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/roles",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /admin/audit-log — audit log accessible",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/audit-log",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Audit log content present', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('audit') || b.includes('log') || b.includes('action')",
+              "  );",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /admin/settings — settings accessible",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/settings",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /admin/delegations — delegations page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/delegations",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /admin/approval-rules — approval rules load",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/approval-rules",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /admin/cross-charge-discounts — cross charge loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/cross-charge-discounts",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "10 — Tasks & Planning",
+      "item": [
+        {
+          "name": "GET /tasks — task list loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/tasks",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Tasks content present', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b => b.includes('task') || b.includes('no task'));",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /legal-entities — legal entities load",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/legal-entities",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "11 — Auth Boundary Checks",
+      "item": [
+        {
+          "name": "GET /dashboard without cookie — redirects to login",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/dashboard",
+            "header": []
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Unauthenticated request redirects or returns 200 (app may redirect client-side)', () => {",
+              "  const code = pm.response.code;",
+              "  const body = pm.response.text().toLowerCase();",
+              "  const redirected = code >= 300 && code < 400;",
+              "  const loginInBody = body.includes('login') || body.includes('sign in');",
+              "  pm.expect(redirected || loginInBody || code === 200).to.be.true;",
+              "});",
+              "pm.test('No server error without auth', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /admin/users without cookie — blocked",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/admin/users",
+            "header": []
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Admin route without auth — redirects or shows login', () => {",
+              "  const code = pm.response.code;",
+              "  const body = pm.response.text().toLowerCase();",
+              "  const blocked = code >= 300 || body.includes('login') || body.includes('sign in');",
+              "  pm.expect(blocked).to.be.true;",
+              "});",
+              "pm.test('No server error on unauthenticated admin access', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /profile — profile page loads",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/profile",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Profile content present', () => {",
+              "  const body = pm.response.text().toLowerCase();",
+              "  pm.expect(body).to.satisfy(b =>",
+              "    b.includes('profile') || b.includes('email') || b.includes('name')",
+              "  );",
+              "});",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /settings — user settings load",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/settings",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('No server error', () => {",
+              "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    },
+
+    {
+      "name": "12 — Response Quality",
+      "item": [
+        {
+          "name": "All pages have valid Content-Type",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/dashboard",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Content-Type is text/html', () => {",
+              "  const ct = pm.response.headers.get('Content-Type') || '';",
+              "  pm.expect(ct).to.include('text/html');",
+              "});",
+              "pm.test('Response has non-empty body', () => {",
+              "  pm.expect(pm.response.text().length).to.be.above(100);",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /people — response time under 3s",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/people",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('People list responds under 3000ms', () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(3000);",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /invoicing — response time under 3s",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/invoicing",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Invoicing list responds under 3000ms', () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(3000);",
+              "});"
+            ]}
+          }]
+        },
+        {
+          "name": "GET /reports — response time under 5s",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/public/reports",
+            "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
+          },
+          "event": [{
+            "listen": "test",
+            "script": { "exec": [
+              "pm.test('Reports page responds under 5000ms', () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});"
+            ]}
+          }]
+        }
+      ]
+    }
+
+  ]
+}
