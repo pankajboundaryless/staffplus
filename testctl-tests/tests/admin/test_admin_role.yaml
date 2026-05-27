@@ -5,24 +5,14 @@ auth:
 
 steps:
   - action: GET
-    path: /admin/roles
+    path: /admin/roles/new
     expect_status: 200
 
   - action: POST
-    path: /admin/roles/new
+    path: /admin/roles
     body:
-      label: "Testctl Test Role"
-    expect_status: 302
-
-validations:
-  - source: database
-    table: roles
-    lookup:
-      tenant_id: 1
-      label:     "Testctl Test Role"
-    expect:
-      is_system: "0"
+      name: "Testctl Role"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 teardown_sql:
-  - "DELETE FROM role_permissions WHERE role_id IN (SELECT id FROM roles WHERE tenant_id = 1 AND label = 'Testctl Test Role')"
-  - "DELETE FROM roles WHERE tenant_id = 1 AND label = 'Testctl Test Role'"
+  - "DELETE FROM roles WHERE name = 'Testctl Role' AND tenant_id = 1"

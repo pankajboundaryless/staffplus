@@ -7,6 +7,4 @@ steps:
   - action: GET
     path: /reports/utilization
     expect_status: 200
-    validations:
-      - type: text_contains
-        value: "Utilization"
+    text_contains: "Utilization"   # page title: "Utilization Report"

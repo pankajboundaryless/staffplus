@@ -7,6 +7,4 @@ steps:
   - action: GET
     path: /reports/wip
     expect_status: 200
-    validations:
-      - type: text_contains
-        value: "Work in Progress"
+    text_contains: "Work in Progress"

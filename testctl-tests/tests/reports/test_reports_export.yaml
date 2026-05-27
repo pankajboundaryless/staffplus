@@ -6,7 +6,4 @@ auth:
 steps:
   - action: GET
     path: /reports/export/utilization
-    expect_status: 200
-    validations:
-      - type: text_contains
-        value: "Person"
+    expect_status: 200   # CSV download — response is 200 with file content

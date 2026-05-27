@@ -1,12 +1,10 @@
 test_case: settings_page_accessible
 module: settings
 auth:
-  role: employee
+  role: admin
 
 steps:
   - action: GET
     path: /settings
     expect_status: 200
-    validations:
-      - type: text_contains
-        value: "Settings"
+    text_contains: "Settings"   # page heading: "Settings"

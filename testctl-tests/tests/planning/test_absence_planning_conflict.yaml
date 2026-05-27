@@ -1,4 +1,4 @@
-test_case: planning_create_assignment
+test_case: planning_absence_conflict_warning
 module: planning
 auth:
   role: admin
@@ -13,8 +13,8 @@ steps:
     body:
       person_id:      "1"
       project_id:     "14"
-      start_date:     "2026-06-01"
-      end_date:       "2026-08-31"
+      start_date:     "2026-07-01"
+      end_date:       "2026-07-31"
       allocation_pct: "100"
     expect_status: 200   # app responds 200+HTML, not PRG redirect
 

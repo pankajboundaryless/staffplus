@@ -5,17 +5,16 @@
 # Custom types:   implement _<type>() in result_router.py and add a config entry here.
 
 endpoints:
-  # Always-on: write JSON + JUnit XML to the runs/ directory
+  # Always-on: write JSON + JUnit XML to the runs/<run_id>/ directory
   - name: local-audit
     type: filesystem
     enabled: true
-    path: "${TESTCTL_RUNS_DIR:-.}/runs"
 
   # HTML report for C-Level / management review
   - name: html-report
     type: html_report
     enabled: true
-    path: "${TESTCTL_RUNS_DIR:-.}/runs/{run_id}/report.html"
+    path: "./runs/{run_id}/report.html"
 
   # Jira: create a Bug issue for each failed test case
   - name: jira

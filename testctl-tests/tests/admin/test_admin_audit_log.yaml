@@ -7,6 +7,4 @@ steps:
   - action: GET
     path: /admin/audit-log
     expect_status: 200
-    validations:
-      - type: text_contains
-        value: "Audit Log"
+    text_contains: "Audit"   # page heading is "Audit Log"

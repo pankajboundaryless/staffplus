@@ -35,12 +35,15 @@ class TestTimePages:
         assert not has_error(page)
 
     def test_timesheets_has_weekly_grid(self, page):
-        """Timesheet page shows Mon-Fri columns."""
-        page.goto(url("/time/timesheets"))
+        """Weekly time-booking grid shows Mon-Fri columns.
+        NOTE: /time/timesheets is a monthly project-grouped summary.
+        The weekly day-column grid lives at /time/book — use that URL.
+        """
+        page.goto(url("/time/book"))
         page.wait_for_load_state("networkidle")
         content = page.content()
         days = sum(1 for d in ["Mon", "Tue", "Wed", "Thu", "Fri"] if d in content)
-        assert days >= 3, f"Only {days}/5 weekdays found on timesheet page"
+        assert days >= 3, f"Only {days}/5 weekdays found on /time/book grid"
 
     def test_timesheets_shows_hours_target(self, page):
         page.goto(url("/time/timesheets"))

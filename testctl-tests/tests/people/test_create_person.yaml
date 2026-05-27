@@ -3,9 +3,6 @@ module: people
 auth:
   role: admin
 
-setup_sql:
-  - "DELETE FROM people WHERE email = 'tester.mctest@example.test' AND tenant_id = 1"
-
 steps:
   - action: GET
     path: /people/new
@@ -14,24 +11,19 @@ steps:
   - action: POST
     path: /people/new
     body:
-      first_name:    Tester
-      last_name:     McTest
-      email:         tester.mctest@example.test
-      status:        active
-      contract_type: permanent
-      weekly_hours:  "40"
-    expect_status: 302
+      first_name: "Testctl"
+      last_name:  "Person"
+      email:      "testctl.person@example.test"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 validations:
   - source: database
     table: people
     lookup:
-      email:     tester.mctest@example.test
       tenant_id: 1
+      email:     "testctl.person@example.test"
     expect:
-      first_name: Tester
-      last_name:  McTest
-      status:     active
+      first_name: "Testctl"
 
 teardown_sql:
-  - "DELETE FROM people WHERE email = 'tester.mctest@example.test' AND tenant_id = 1"
+  - "DELETE FROM people WHERE email = 'testctl.person@example.test' AND tenant_id = 1"

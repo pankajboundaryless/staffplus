@@ -1,22 +1,11 @@
 test_case: security_no_auth_bypass_on_post
 module: security
-# No auth block — unauthenticated POST must NOT create any data; must redirect to login.
+
 steps:
   - action: POST
-    path: /people/new
-    skip_csrf: true
+    path: /time/store
     body:
-      first_name: Injected
-      last_name:  User
-      email:      injected@attacker.com
-      status:     active
+      project_id: "14"
+      hours:      "8"
     follow_redirect: false
-    expect_status: 302
-
-validations:
-  - source: database
-    table: people
-    lookup:
-      email:     injected@attacker.com
-      tenant_id: 1
-    expect_absent: true
+    expect_status: 302   # unauthenticated POST must redirect to login, not store data

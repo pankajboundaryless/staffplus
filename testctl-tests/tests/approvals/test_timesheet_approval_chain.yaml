@@ -1,0 +1,11 @@
+test_case: timesheet_full_approval_chain
+module: approvals
+skip: true
+skip_reason: "Multi-step token deeplink approval not yet implemented — /approvals/respond returns 404"
+auth:
+  role: admin
+
+steps:
+  - action: GET
+    path: /approvals/respond?token=testctl-chain-step1-token&action=approve
+    expect_status: 302

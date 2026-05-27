@@ -17,7 +17,7 @@ steps:
     path: /absence/approve
     body:
       request_id: "99801"
-    expect_status: 302
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 validations:
   - source: database

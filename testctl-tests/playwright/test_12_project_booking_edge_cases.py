@@ -60,7 +60,7 @@ def get_csrf(page: Page, endpoint: str) -> str:
 def assign(page: Page, person_id: str, project_id: str,
            start: str, end: str,
            allocation_pct: int = 100,
-           planned_hours: float | None = None,
+           planned_hours = None,  # float | None
            rate_card_level_id: str = "") -> dict:
     """
     POST /planning/assign and return dict with:

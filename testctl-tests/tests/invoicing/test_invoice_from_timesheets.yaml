@@ -1,0 +1,15 @@
+test_case: invoice_lines_match_booked_hours
+module: invoicing
+skip: true
+skip_reason: "Requires dynamic invoice ID from prior step — template variable {{ invoice_id }} not resolved by runner yet"
+auth:
+  role: admin
+
+steps:
+  - action: POST
+    path: /invoicing/new
+    body:
+      customer_id:  "1"
+      project_id:   "14"
+      invoice_date: "2026-06-01"
+    expect_status: 200

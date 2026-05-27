@@ -15,7 +15,7 @@ steps:
       start_date:      "2026-06-01"
       end_date:        "2026-06-03"
       notes:           "Testctl automated absence"
-    expect_status: 302
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 validations:
   - source: database

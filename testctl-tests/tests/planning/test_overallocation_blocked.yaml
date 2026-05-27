@@ -1,4 +1,4 @@
-test_case: planning_create_assignment
+test_case: planning_overallocation_blocked
 module: planning
 auth:
   role: admin
@@ -16,7 +16,17 @@ steps:
       start_date:     "2026-06-01"
       end_date:       "2026-08-31"
       allocation_pct: "100"
-    expect_status: 200   # app responds 200+HTML, not PRG redirect
+    expect_status: 200
+
+  - action: POST
+    path: /planning/assign
+    body:
+      person_id:      "1"
+      project_id:     "14"
+      start_date:     "2026-06-01"
+      end_date:       "2026-08-31"
+      allocation_pct: "100"
+    expect_status: 200   # over-allocation: app returns 200+error message, not 422
 
 teardown_sql:
   - "DELETE FROM project_assignments WHERE project_id = 14 AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)"

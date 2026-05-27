@@ -11,22 +11,18 @@ steps:
   - action: POST
     path: /customers/new
     body:
-      name:               "Testctl Test Customer"
-      short_name:         "TTC"
-      type:               "customer"
-      currency:           "CHF"
-      payment_terms_days: "30"
-    expect_status: 302
+      name:    "Testctl Customer"
+      country: "GB"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 validations:
   - source: database
     table: customers
     lookup:
+      name:      "Testctl Customer"
       tenant_id: 1
-      name:      "Testctl Test Customer"
     expect:
-      status: active
+      name: "Testctl Customer"
 
 teardown_sql:
-  - "DELETE FROM customer_billing_profiles WHERE customer_id IN (SELECT id FROM customers WHERE tenant_id = 1 AND name = 'Testctl Test Customer')"
-  - "DELETE FROM customers WHERE tenant_id = 1 AND name = 'Testctl Test Customer'"
+  - "DELETE FROM customers WHERE name = 'Testctl Customer' AND tenant_id = 1"

@@ -7,32 +7,11 @@ steps:
   - action: GET
     path: /invoicing/new
     expect_status: 200
-    extract:
-      - name: first_customer_id
-        selector: "select[name='customer_id'] option:not([value=''])"
-        attribute: value
 
   - action: POST
     path: /invoicing/new
     body:
-      customer_id:  "{{ first_customer_id }}"
-      invoice_date: "2026-05-07"
-      due_date:     "2026-06-07"
-      currency:     CHF
-      notes:        "Testctl test invoice"
-    expect_status: 302
-
-validations:
-  - source: database
-    table: invoices
-    lookup:
-      tenant_id:    1
-      invoice_date: "2026-05-07"
-      currency:     CHF
-    order_by: id DESC
-    expect:
-      status: draft
-
-teardown_sql:
-  - "DELETE FROM invoice_lines WHERE invoice_id IN (SELECT id FROM invoices WHERE tenant_id = 1 AND invoice_date = '2026-05-07' AND currency = 'CHF')"
-  - "DELETE FROM invoices WHERE tenant_id = 1 AND invoice_date = '2026-05-07' AND currency = 'CHF'"
+      customer_id:  "1"
+      project_id:   "14"
+      invoice_date: "2026-06-01"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect

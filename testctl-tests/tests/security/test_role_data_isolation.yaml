@@ -1,0 +1,28 @@
+test_case: role_data_isolation_employee
+module: security
+auth:
+  role: employee
+
+steps:
+  - action: POST
+    path: /time/submit-week
+    body:
+      week: "2026-W22"
+    expect_status: 200   # employee can submit their own timesheet (200+HTML)
+
+  - action: POST
+    path: /absence/approve
+    body:
+      request_id: "99801"
+    follow_redirect: false
+    expect_status: 302   # employee cannot approve — redirected away
+
+  - action: GET
+    path: /admin/users
+    follow_redirect: false
+    expect_status: 302   # employee redirected away from admin, not 403
+
+  - action: GET
+    path: /admin/roles
+    follow_redirect: false
+    expect_status: 302   # employee redirected away from admin, not 403

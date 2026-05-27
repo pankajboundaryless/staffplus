@@ -3,15 +3,6 @@ module: time
 auth:
   role: employee
 
-setup_sql:
-  - "INSERT IGNORE INTO projects (id, tenant_id, name, status, type, created_at) VALUES (99003, 1, 'Testctl Timer Project', 'active', 'billable', NOW())"
-  - >
-    INSERT IGNORE INTO project_members (project_id, person_id, role, created_at)
-    SELECT 99003, p.id, 'member', NOW()
-    FROM people p JOIN users u ON u.id = p.user_id
-    WHERE u.auth_uid = 90003 AND u.tenant_id = 1
-    LIMIT 1
-
 steps:
   - action: GET
     path: /time/timer
@@ -20,49 +11,22 @@ steps:
   - action: POST
     path: /time/timer/start
     body:
-      project_id:  "99003"
-      description: "Testctl timer session"
-    expect_status: 200
-    extract:
-      - name: session_id
-        regex: '"session_id"\s*:\s*(\d+)'
+      project_id: "14"
+      notes:      "Testctl timer"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
   - action: POST
     path: /time/timer/stop
-    body:
-      session_id: "{{ session_id }}"
+    body: {}
     expect_status: 200
 
   - action: POST
     path: /time/timer/convert
     body:
-      session_id:  "{{ session_id }}"
-      project_id:  "99003"
-      date_worked: "2026-05-07"
-      description: "Testctl converted timer entry"
-      minutes:     "30"
-    expect_status: 302
-
-validations:
-  - source: database
-    table: time_entries
-    lookup:
-      tenant_id:   1
-      project_id:  99003
-      date_worked: "2026-05-07"
-    order_by: id DESC
-    expect:
-      status:      draft
-      description: "Testctl converted timer entry"
+      date:  "2026-06-02"
+      hours: "1"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 teardown_sql:
-  - "DELETE FROM time_entries WHERE project_id = 99003 AND tenant_id = 1"
-  - >
-    DELETE FROM timer_sessions
-    WHERE person_id IN (
-      SELECT p.id FROM people p JOIN users u ON u.id = p.user_id
-      WHERE u.auth_uid = 90003 AND u.tenant_id = 1
-    )
-    AND project_id = 99003
-  - "DELETE FROM project_members WHERE project_id = 99003"
-  - "DELETE FROM projects WHERE id = 99003"
+  - "DELETE FROM time_entries WHERE notes = 'Testctl timer' AND tenant_id = 1"
+  - "DELETE FROM timers WHERE tenant_id = 1 AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)"

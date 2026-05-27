@@ -103,4 +103,4 @@ class TestProjectDetail:
         link.click()
         page.wait_for_load_state("networkidle")
         assert "project" in page.url.lower()
-        assert page.locator(".alert-danger, text=500").count() == 0
+        assert page.locator(".alert-danger:has-text('500')").count() == 0

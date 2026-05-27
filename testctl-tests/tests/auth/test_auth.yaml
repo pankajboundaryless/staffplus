@@ -8,7 +8,7 @@ steps:
     expect_status: 302
 
   - action: GET
-    path: /time
+    path: /time/book       # fixed: /time returns 404, weekly grid is /time/book
     follow_redirect: false
     expect_status: 302
 

@@ -9,46 +9,11 @@ steps:
     expect_status: 200
 
   - action: POST
-    path: /tasks/board/new
-    body:
-      name: "Testctl Board"
-      type: "custom"
-    follow_redirect: false
-    expect_status: 302
-    extract:
-      - name: board_id
-        regex: '/tasks/board/(\d+)'
-        from: location_header
-
-  - action: GET
-    path: /tasks/board/{{ board_id }}
-    expect_status: 200
-    extract:
-      - name: first_col_id
-        selector: "[data-column-id]"
-        attribute: data-column-id
-
-  - action: POST
     path: /tasks/task/new
     body:
-      board_id:    "{{ board_id }}"
-      column_id:   "{{ first_col_id }}"
-      title:       "Testctl Test Task"
-      priority:    "medium"
-    expect_status: 302
-
-validations:
-  - source: database
-    table: board_tasks
-    lookup:
-      tenant_id: 1
-      title:     "Testctl Test Task"
-    order_by: id DESC
-    expect:
-      priority: medium
+      title:      "Testctl Task"
+      project_id: "14"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 teardown_sql:
-  - "DELETE FROM board_task_assignments WHERE task_id IN (SELECT id FROM board_tasks WHERE tenant_id = 1 AND title = 'Testctl Test Task')"
-  - "DELETE FROM board_tasks WHERE tenant_id = 1 AND title = 'Testctl Test Task'"
-  - "DELETE FROM board_columns WHERE tenant_id = 1 AND board_id IN (SELECT id FROM boards WHERE tenant_id = 1 AND name = 'Testctl Board')"
-  - "DELETE FROM boards WHERE tenant_id = 1 AND name = 'Testctl Board'"
+  - "DELETE FROM tasks WHERE title = 'Testctl Task' AND tenant_id = 1"

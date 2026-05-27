@@ -113,15 +113,38 @@ class TestFormEdgeCases:
         assert not has_error(page), "Server error on far-future date"
 
     def test_negative_hours_no_crash(self, page):
+        """
+        The duration field on /time/book is a time-format picker inside a day-card.
+        The submit button lives inside a card that may not be visible at load time.
+        We use JS to force a negative value then submit the first booking form
+        directly — verifying the server does not return a 500 on bad input.
+        """
         page.goto(url("/time/book"))
         page.wait_for_load_state("networkidle")
-        hours = page.locator("input[name='hours'], input[name='duration']")
-        if hours.count() == 0:
-            pytest.skip("Hours field not found")
-        hours.first.fill("-999")
-        page.locator("button[type='submit'], input[type='submit']").first.click()
+
+        hours_field = page.locator("input[name='hours'], input[name='duration']").first
+        if hours_field.count() == 0:
+            pytest.skip("Duration/hours field not found on /time/book")
+
+        # Force negative value via JS (field may be inside a hidden card)
+        page.evaluate(
+            "el => { el.value = '-1'; el.dispatchEvent(new Event('change', {bubbles:true})); }",
+            hours_field.element_handle()
+        )
+
+        # Submit the first booking form via JS (bypasses visibility constraint)
+        submitted = page.evaluate("""() => {
+            const form = document.querySelector('form[action*="time"], form[action*="book"]');
+            if (!form) return false;
+            form.submit();
+            return true;
+        }""")
+
+        if not submitted:
+            pytest.skip("No time booking form found to submit")
+
         page.wait_for_load_state("networkidle")
-        assert not has_error(page), "Server error on negative hours"
+        assert not has_error(page), "Server error (500) on negative hours input"
 
 
 class TestResponsiveLayout:

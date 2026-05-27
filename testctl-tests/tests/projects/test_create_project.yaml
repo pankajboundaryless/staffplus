@@ -3,32 +3,28 @@ module: projects
 auth:
   role: admin
 
-setup_sql:
-  - "DELETE FROM projects WHERE name = 'Testctl Project Alpha' AND tenant_id = 1"
-
 steps:
   - action: GET
     path: /projects/new
     expect_status: 200
 
   - action: POST
-    path: /projects/new
+    path: /projects
     body:
-      name:   "Testctl Project Alpha"
-      type:   billable
-      status: active
-    expect_status: 302
+      name:         "Testctl Project"
+      customer_id:  "1"
+      budget_hours: "80"
+      status:       "active"
+    expect_status: 200   # app responds 200+HTML, not PRG redirect
 
 validations:
   - source: database
     table: projects
     lookup:
-      name:      "Testctl Project Alpha"
+      name:      "Testctl Project"
       tenant_id: 1
     expect:
-      type:   billable
-      status: active
+      name: "Testctl Project"
 
 teardown_sql:
-  - "DELETE FROM project_members WHERE project_id IN (SELECT id FROM projects WHERE name = 'Testctl Project Alpha' AND tenant_id = 1)"
-  - "DELETE FROM projects WHERE name = 'Testctl Project Alpha' AND tenant_id = 1"
+  - "DELETE FROM projects WHERE name = 'Testctl Project' AND tenant_id = 1"
