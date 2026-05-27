@@ -32,8 +32,10 @@
             "listen": "test",
             "script": { "exec": [
               "pm.test('Status 200', () => pm.response.to.have.status(200));",
-              "pm.test('Not login redirect', () => {",
-              "  pm.expect(pm.response.url).to.not.include('/login');",
+              "pm.test('Not login redirect — session is active', () => {",
+              "  pm.expect(pm.response.code).to.equal(200);",
+              "  const body = pm.response.text();",
+              "  pm.expect(body).to.include('dashboard');",
               "});",
               "pm.test('No server error', () => {",
               "  const body = pm.response.text();",
@@ -92,10 +94,7 @@
           "name": "GET /people?search=test — search works",
           "request": {
             "method": "GET",
-            "url": {
-              "raw": "{{base_url}}/public/people?search=test",
-              "query": [{ "key": "search", "value": "test" }]
-            },
+            "url": "{{base_url}}/public/people?search=test",
             "header": [{ "key": "Cookie", "value": "{{cookie}}" }]
           },
           "event": [{
