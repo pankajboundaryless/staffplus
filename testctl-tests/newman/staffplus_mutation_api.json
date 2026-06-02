@@ -1,0 +1,2091 @@
+{
+  "info": {
+    "name": "StaffPlus \u2014 Mutation API v2 (POST/UPDATE)",
+    "_postman_id": "staffplus-mutation-api-v2",
+    "description": "Write-path functional tests: CSRF extraction, valid creates, validation failures, security (XSS/SQLi in form fields, missing/invalid CSRF). Covers /people, /projects, /customers, /time/store, /tasks, /absence.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://robomon.boundaryless.com/test/timetracker/public"
+    },
+    {
+      "key": "session_cookie",
+      "value": "370efefcb94c7a12c4bd4c4d17db3678"
+    },
+    {
+      "key": "csrf_token",
+      "value": ""
+    },
+    {
+      "key": "new_person_id",
+      "value": ""
+    },
+    {
+      "key": "new_customer_id",
+      "value": ""
+    },
+    {
+      "key": "new_project_id",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "noauth"
+  },
+  "item": [
+    {
+      "name": "00 \u2014 CSRF Bootstrap",
+      "item": [
+        {
+          "name": "Extract CSRF token from /people/new",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('200 OK \u2014 form page loads', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "var body = pm.response.text();",
+                  "var match = body.match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "pm.test('CSRF token found in page', () => {",
+                  "  pm.expect(match).to.not.be.null;",
+                  "});",
+                  "if (match) {",
+                  "  pm.collectionVariables.set('csrf_token', match[1]);",
+                  "  console.log('CSRF token captured: ' + match[1].substring(0, 16) + '...');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 \u2014 Create Person",
+      "item": [
+        {
+          "name": "POST /people/new \u2014 valid (all required fields)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response 200 or 302 (redirect after create)', () => {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
+                  "});",
+                  "",
+                  "var body = pm.response.text();",
+                  "",
+                  "pm.test('No server 500 error', () => {",
+                  "  pm.expect(body).to.not.include('Whoops');",
+                  "  pm.expect(body).to.not.include('Internal Server Error');",
+                  "});",
+                  "",
+                  "pm.test('No validation errors for valid submission', () => {",
+                  "  pm.expect(body).to.not.include('is required');",
+                  "  pm.expect(body).to.not.include('is-invalid');",
+                  "});",
+                  "",
+                  "// Capture new person ID from redirect or response",
+                  "var idMatch = body.match(/\\/people\\/(\\d+)/);",
+                  "if (idMatch) {",
+                  "  pm.collectionVariables.set('new_person_id', idMatch[1]);",
+                  "  console.log('Created person ID: ' + idMatch[1]);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Newman"
+                },
+                {
+                  "key": "last_name",
+                  "value": "TestPerson-v2"
+                },
+                {
+                  "key": "email",
+                  "value": "newman-test-v2@test.internal"
+                },
+                {
+                  "key": "phone",
+                  "value": "+490000000099"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "joined_date",
+                  "value": "2025-01-15"
+                },
+                {
+                  "key": "contract_type",
+                  "value": "employee"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /people/new \u2014 missing first_name (validation)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Re-fetch fresh CSRF for this request",
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns 200 with validation errors (not 500)', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "var body = pm.response.text();",
+                  "",
+                  "pm.test('Validation: first_name required message shown', () => {",
+                  "  pm.expect(body).to.include('First name is required');",
+                  "});",
+                  "",
+                  "pm.test('No server crash on missing field', () => {",
+                  "  pm.expect(body).to.not.include('Whoops');",
+                  "  pm.expect(body).to.not.include('Stack trace');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "last_name",
+                  "value": "TestPerson"
+                },
+                {
+                  "key": "email",
+                  "value": "validation-test@test.internal"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /people/new \u2014 missing email (validation)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns 200 with validation errors', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "var body = pm.response.text();",
+                  "pm.test('Validation: email required message shown', () => {",
+                  "  pm.expect(body).to.include('Email is required');",
+                  "});",
+                  "pm.test('No crash on missing email', () => {",
+                  "  pm.expect(body).to.not.include('Whoops');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "first_name",
+                  "value": "Test"
+                },
+                {
+                  "key": "last_name",
+                  "value": "NoEmail"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /people/new \u2014 XSS in name field (security)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('No server error on XSS payload in name', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "",
+                  "var body = pm.response.text();",
+                  "",
+                  "pm.test('XSS payload not executed \u2014 script tag not reflected raw', () => {",
+                  "  // If reflected back, it must be HTML-escaped",
+                  "  // Raw <script>alert should NOT appear",
+                  "  pm.expect(body).to.not.include('<script>alert(1)</script>');",
+                  "});",
+                  "",
+                  "pm.test('Response time under 5s', () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "first_name",
+                  "value": "<script>alert(1)</script>"
+                },
+                {
+                  "key": "last_name",
+                  "value": "XSSTest"
+                },
+                {
+                  "key": "email",
+                  "value": "xss-test@test.internal"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /people/new \u2014 SQL injection in email (security)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('No SQL error / 500 on injection in email field', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  var body = pm.response.text();",
+                  "  pm.expect(body).to.not.include('SQLSTATE');",
+                  "  pm.expect(body).to.not.include('SQL syntax error');",
+                  "  pm.expect(body).to.not.include('SQLSTATE');",
+                  "  pm.expect(body).to.not.include('PDOException');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "first_name",
+                  "value": "SQL"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Inject"
+                },
+                {
+                  "key": "email",
+                  "value": "' OR '1'='1'--@test.com"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /people/new \u2014 1000-char last_name (edge case)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.collectionVariables.set('long_name', 'A'.repeat(1000));",
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('No 500 on oversized field \u2014 graceful handling', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('Response time under 5s', () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "first_name",
+                  "value": "LongName"
+                },
+                {
+                  "key": "last_name",
+                  "value": "{{long_name}}"
+                },
+                {
+                  "key": "email",
+                  "value": "longname@test.internal"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 \u2014 Create & Update Customer",
+      "item": [
+        {
+          "name": "POST /customers/new \u2014 valid",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/customers/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('No server error on valid customer create', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "",
+                  "pm.test('No validation errors on valid submission', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('is required');",
+                  "});",
+                  "",
+                  "var idMatch = pm.response.text().match(/\\/customers\\/(\\d+)/);",
+                  "if (idMatch) pm.collectionVariables.set('new_customer_id', idMatch[1]);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Newman Test Customer v2"
+                },
+                {
+                  "key": "short_name",
+                  "value": "NTC-v2"
+                },
+                {
+                  "key": "currency",
+                  "value": "EUR"
+                },
+                {
+                  "key": "payment_terms_days",
+                  "value": "30"
+                },
+                {
+                  "key": "invoice_email",
+                  "value": "billing@newman-test.internal"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /customers/new \u2014 missing name (validation)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/customers/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns 200 with validation error on missing name', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.text()).to.include('required');",
+                  "});",
+                  "pm.test('No crash on empty submit', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "currency",
+                  "value": "USD"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /customers/1/update \u2014 update existing customer",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/customers/1/edit',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "  // Extract current name to preserve it",
+                  "  var nm = res.text().match(/name=\"name\"[^>]+value=\"([^\"]+)\"/);",
+                  "  if (nm) pm.collectionVariables.set('customer1_name', nm[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Update customer/1 \u2014 no 500 error', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('No validation errors after update', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('is-invalid');",
+                  "});",
+                  "pm.test('Response time under 5s', () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "{{customer1_name}}"
+                },
+                {
+                  "key": "currency",
+                  "value": "EUR"
+                },
+                {
+                  "key": "payment_terms_days",
+                  "value": "30"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/1/update",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "1",
+                "update"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 \u2014 Create & Update Project",
+      "item": [
+        {
+          "name": "POST /projects/new \u2014 valid (with customer_id=1)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/projects/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('No server error on valid project create', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('No validation errors on valid fields', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('is required');",
+                  "});",
+                  "var idMatch = pm.response.text().match(/\\/projects\\/(\\d+)/);",
+                  "if (idMatch) pm.collectionVariables.set('new_project_id', idMatch[1]);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Newman Test Project v2"
+                },
+                {
+                  "key": "code",
+                  "value": "NTv2"
+                },
+                {
+                  "key": "customer_id",
+                  "value": "1"
+                },
+                {
+                  "key": "type",
+                  "value": "fixed"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2025-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2025-12-31"
+                },
+                {
+                  "key": "budget_amount",
+                  "value": "50000"
+                },
+                {
+                  "key": "budget_currency",
+                  "value": "EUR"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/projects/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projects",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /projects/new \u2014 missing name (validation)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/projects/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Returns 200 with validation errors on missing name', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.text()).to.include('required');",
+                  "});",
+                  "pm.test('No crash on empty project submit', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "customer_id",
+                  "value": "1"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/projects/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projects",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /projects/1 \u2014 update project (preserve name)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/projects/1/edit',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var body = res.text();",
+                  "  var m = body.match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "  var nm = body.match(/name=\"name\"[^>]+value=\"([^\"]+)\"/);",
+                  "  if (nm) pm.collectionVariables.set('project1_name', nm[1]);",
+                  "  var cid = body.match(/name=\"customer_id\"[^>]+value=\"([^\"]+)\"/);",
+                  "  if (!cid) {",
+                  "    // Try option selected",
+                  "    var sel = body.match(/customer_id[\\s\\S]*?option[^>]+selected[^>]*value=\"([^\"]+)\"/);",
+                  "    if (sel) pm.collectionVariables.set('project1_customer', sel[1]);",
+                  "    else pm.collectionVariables.set('project1_customer', '1');",
+                  "  }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Update project/1 \u2014 no 500', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('No validation errors on project update', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('is-invalid');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "{{project1_name}}"
+                },
+                {
+                  "key": "customer_id",
+                  "value": "{{project1_customer}}"
+                },
+                {
+                  "key": "type",
+                  "value": "fixed"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/projects/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projects",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 \u2014 Book Time Entry",
+      "item": [
+        {
+          "name": "POST /time/store \u2014 valid time entry",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/time/book',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Time store \u2014 no 500 error', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('Redirect or 200 after time booking', () => {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "project_id",
+                  "value": "1"
+                },
+                {
+                  "key": "date_worked",
+                  "value": "2025-05-01"
+                },
+                {
+                  "key": "duration",
+                  "value": "4"
+                },
+                {
+                  "key": "description",
+                  "value": "Newman v2 test time entry"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/time/store",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "time",
+                "store"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /time/store \u2014 missing project_id (validation)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/time/book',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Missing project_id \u2014 no 500, redirect back', () => {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 302]);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "date_worked",
+                  "value": "2025-05-01"
+                },
+                {
+                  "key": "duration",
+                  "value": "8"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/time/store",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "time",
+                "store"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /time/store \u2014 negative duration (edge case)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/time/book',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Negative duration \u2014 no 500 crash', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('Response time under 5s', () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "project_id",
+                  "value": "1"
+                },
+                {
+                  "key": "date_worked",
+                  "value": "2025-05-01"
+                },
+                {
+                  "key": "duration",
+                  "value": "-99"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/time/store",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "time",
+                "store"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /time/store \u2014 future date (edge case)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/time/book',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Future date \u2014 no 500, handled gracefully', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "project_id",
+                  "value": "1"
+                },
+                {
+                  "key": "date_worked",
+                  "value": "2099-12-31"
+                },
+                {
+                  "key": "duration",
+                  "value": "8"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/time/store",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "time",
+                "store"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 \u2014 Update Person",
+      "item": [
+        {
+          "name": "POST /people/1 \u2014 update (preserve current data)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/1/edit',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var body = res.text();",
+                  "  var m = body.match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "  var fn = body.match(/name=\"first_name\"[^>]+value=\"([^\"]+)\"/);",
+                  "  var ln = body.match(/name=\"last_name\"[^>]+value=\"([^\"]+)\"/);",
+                  "  var em = body.match(/name=\"email\"[^>]+value=\"([^\"]+)\"/);",
+                  "  if (fn) pm.collectionVariables.set('p1_first', fn[1]);",
+                  "  if (ln) pm.collectionVariables.set('p1_last', ln[1]);",
+                  "  if (em) pm.collectionVariables.set('p1_email', em[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Update people/1 \u2014 no server error', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('No validation errors on update with valid data', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('is-invalid');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "first_name",
+                  "value": "{{p1_first}}"
+                },
+                {
+                  "key": "last_name",
+                  "value": "{{p1_last}}"
+                },
+                {
+                  "key": "email",
+                  "value": "{{p1_email}}"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /people/1 \u2014 update with XSS in phone (security)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/1/edit',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var body = res.text();",
+                  "  var m = body.match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "  var fn = body.match(/name=\"first_name\"[^>]+value=\"([^\"]+)\"/);",
+                  "  var ln = body.match(/name=\"last_name\"[^>]+value=\"([^\"]+)\"/);",
+                  "  var em = body.match(/name=\"email\"[^>]+value=\"([^\"]+)\"/);",
+                  "  if (fn) pm.collectionVariables.set('p1_first', fn[1]);",
+                  "  if (ln) pm.collectionVariables.set('p1_last', ln[1]);",
+                  "  if (em) pm.collectionVariables.set('p1_email', em[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('XSS in phone field \u2014 no 500', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('XSS payload not reflected raw in response', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('<img src=x onerror=alert(1)>');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "first_name",
+                  "value": "{{p1_first}}"
+                },
+                {
+                  "key": "last_name",
+                  "value": "{{p1_last}}"
+                },
+                {
+                  "key": "email",
+                  "value": "{{p1_email}}"
+                },
+                {
+                  "key": "phone",
+                  "value": "<img src=x onerror=alert(1)>"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 \u2014 CSRF Protection",
+      "item": [
+        {
+          "name": "POST /people/new \u2014 missing _csrf token (expect 403/CSRF reject)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Missing CSRF \u2014 not 200 with success (must be rejected)', () => {",
+                  "  var body = pm.response.text();",
+                  "  // Server should either: 403, redirect, or 200 with CSRF error",
+                  "  // Must NOT silently accept and create a person",
+                  "  var isCreated = body.includes('/people/') && !body.includes('is required') && pm.response.code === 200;",
+                  "  pm.expect(isCreated).to.be.false;",
+                  "});",
+                  "",
+                  "pm.test('No 500 error on missing CSRF', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "",
+                  "pm.test('CSRF protection active \u2014 response indicates rejection', () => {",
+                  "  var code = pm.response.code;",
+                  "  var body = pm.response.text();",
+                  "  // Accept: 403, or redirect (302), or CSRF error message in body",
+                  "  var csrfBlocked = (code === 403) || (code === 302) ||",
+                  "    body.toLowerCase().includes('csrf') ||",
+                  "    body.toLowerCase().includes('forbidden') ||",
+                  "    body.toLowerCase().includes('invalid token');",
+                  "  pm.expect(csrfBlocked).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "first_name",
+                  "value": "NoCsrf"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Test"
+                },
+                {
+                  "key": "email",
+                  "value": "nocsrf@test.internal"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /people/new \u2014 invalid _csrf token (expect rejection)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Invalid CSRF token \u2014 request rejected', () => {",
+                  "  var code = pm.response.code;",
+                  "  var body = pm.response.text();",
+                  "  var notAccepted = (code !== 200) || body.includes('csrf') ||",
+                  "    body.includes('forbidden') || body.includes('invalid') || body.includes('required');",
+                  "  pm.expect(notAccepted).to.be.true;",
+                  "});",
+                  "",
+                  "pm.test('No 500 crash on tampered CSRF', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                },
+                {
+                  "key": "first_name",
+                  "value": "BadCsrf"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Test"
+                },
+                {
+                  "key": "email",
+                  "value": "badcsrf@test.internal"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /customers/new \u2014 no session cookie (auth boundary)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Unauthenticated POST \u2014 must not create resource', () => {",
+                  "  var code = pm.response.code;",
+                  "  // Accept: 302 to login, 403, or 200 with login page",
+                  "  var body = pm.response.text();",
+                  "  var isBlocked = (code === 302) || (code === 403) ||",
+                  "    body.includes('login') || body.includes('sign in');",
+                  "  pm.expect(isBlocked).to.be.true;",
+                  "});",
+                  "pm.test('No 500 on unauthenticated POST', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "Should Not Exist Corp"
+                },
+                {
+                  "key": "currency",
+                  "value": "USD"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "new"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 \u2014 Task Creation",
+      "item": [
+        {
+          "name": "POST /tasks/board/new \u2014 create task",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/tasks',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Task create \u2014 no 500', () => {",
+                  "  pm.expect(pm.response.code).to.not.equal(500);",
+                  "  pm.expect(pm.response.text()).to.not.include('Whoops');",
+                  "});",
+                  "pm.test('Response time under 5s', () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Newman v2 Test Task"
+                },
+                {
+                  "key": "type",
+                  "value": "todo"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/tasks/board/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tasks",
+                "board",
+                "new"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 \u2014 Response Integrity & Content-Type",
+      "item": [
+        {
+          "name": "POST response Content-Type must be text/html or application/json",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/people/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Content-Type is html or json (not undefined)', () => {",
+                  "  var ct = pm.response.headers.get('Content-Type') || '';",
+                  "  pm.expect(ct).to.match(/text\\/html|application\\/json/);",
+                  "});",
+                  "pm.test('Response body not empty', () => {",
+                  "  pm.expect(pm.response.text().length).to.be.above(50);",
+                  "});",
+                  "pm.test('POST validation response under 5s', () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(5000);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/people/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "people",
+                "new"
+              ]
+            }
+          }
+        },
+        {
+          "name": "BUG#12+#13 \u2014 PHP warnings + SQL stack trace leaked to users [EXPECTED FAIL]",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.sendRequest({",
+                  "  url: pm.collectionVariables.get('base_url') + '/customers/new',",
+                  "  method: 'GET',",
+                  "  header: { 'Cookie': 'bmgmt_sess=' + pm.collectionVariables.get('session_cookie') }",
+                  "}, function(err, res) {",
+                  "  var m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+                  "  if (m) pm.collectionVariables.set('csrf_token', m[1]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// BUG #12: PHP Warning with full file paths shown to end users",
+                  "//   CustomerController.php lines 170, 174, 202 \u2014 Undefined array key warnings",
+                  "//   Server path: /usr/www/users/bounde/robomon/test/timetracker/",
+                  "// BUG #13: SQLSTATE[22001] + full PHP stack trace (#0..#5) exposed in browser",
+                  "//   Triggered by: invalid currency string too long for DB column",
+                  "//   These assertions FAIL until app suppresses PHP errors in production mode",
+                  "",
+                  "var body = pm.response.text();",
+                  "pm.test('No PHP stack trace in validation error response', () => {",
+                  "  pm.expect(body).to.not.include('Stack trace');",
+                  "  pm.expect(body).to.not.include('#0 ');",
+                  "  pm.expect(body).to.not.include('vendor/');",
+                  "});",
+                  "pm.test('No raw SQL in response body', () => {",
+                  "  pm.expect(body).to.not.include('SELECT ');",
+                  "  pm.expect(body).to.not.include('INSERT INTO');",
+                  "  pm.expect(body).to.not.include('SQLSTATE');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "bmgmt_sess={{session_cookie}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "_csrf",
+                  "value": "{{csrf_token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "'; DROP TABLE customers; --"
+                },
+                {
+                  "key": "currency",
+                  "value": "INVALID_CURRENCY_XYZ"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/new",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "new"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
